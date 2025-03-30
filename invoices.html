@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +30,7 @@
             </div>
             
             <div class="nav-menu">
-                <a href="index.html" class="nav-item">
+                <a href="dashboard.html" class="nav-item">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
@@ -42,12 +43,12 @@
                     <span>Invoices</span>
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="clients.html" class="nav-item">
                     <i class="fas fa-users"></i>
                     <span>Clients</span>
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="products.html" class="nav-item">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Products</span>
                 </a>
@@ -97,11 +98,7 @@
                 <div class="nav-section">
                     <h3>Finances</h3>
                 </div>
-                <div class="modal-body">
-                    <form id="invoiceForm">
-                        <div class="form-grid">
-                            <div class="form-section">
-                                <h3>Client Information</h3>     
+               
                 <a href="#" class="nav-item">
                     <i class="fas fa-chart-pie"></i>
                     <span>Reports</span>
@@ -114,11 +111,11 @@
                 <div class="nav-section">
                     <h3>Settings</h3>
                 </div>
-                <a href="#" class="nav-item">
+                <a href="settings.html" class="nav-item">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="profile.html" class="nav-item">
                     <i class="fas fa-user-cog"></i>
                     <span>Account</span>
                 </a>
@@ -177,9 +174,9 @@
                     <button class="btn secondary-btn" id="importInvoiceBtn">
                         <i class="fas fa-file-import"></i> Import
                     </button>
-                    <button class="btn primary-btn" id="createInvoiceBtn">
+                    <a href="create-invoice.html" class="btn primary-btn" id="createInvoiceBtn">
                         <i class="fas fa-plus"></i> Create Invoice
-                    </button>
+                    </a>
                 </div>
             </div>
             
@@ -351,138 +348,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-invoice="INV-2025-0001" data-client="Globex Industries" data-date="2025-03-15" data-duedate="2025-04-14" data-amount="2580" data-status="paid">
-                                <td>INV-2025-0001</td>
-                                <td>Globex Industries</td>
-                                <td>Mar 15, 2025</td>
-                                <td>Apr 14, 2025</td>
-                                <td>$2,580.00</td>
-                                <td><span class="status paid">Paid</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0001" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-invoice="INV-2025-0002" data-client="Stark Industries" data-date="2025-03-18" data-duedate="2025-04-17" data-amount="4750" data-status="pending">
-                                <td>INV-2025-0002</td>
-                                <td>Stark Industries</td>
-                                <td>Mar 18, 2025</td>
-                                <td>Apr 17, 2025</td>
-                                <td>$4,750.00</td>
-                                <td><span class="status pending">Pending</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0002" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-invoice="INV-2025-0003" data-client="Wayne Enterprises" data-date="2025-03-10" data-duedate="2025-04-09" data-amount="8350" data-status="overdue">
-                                <td>INV-2025-0003</td>
-                                <td>Wayne Enterprises</td>
-                                <td>Mar 10, 2025</td>
-                                <td>Apr 09, 2025</td>
-                                <td>$8,350.00</td>
-                                <td><span class="status overdue">Overdue</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0003" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-invoice="INV-2025-0004" data-client="Acme Corp" data-date="2025-03-22" data-duedate="2025-04-21" data-amount="1825" data-status="draft">
-                                <td>INV-2025-0004</td>
-                                <td>Acme Corp</td>
-                                <td>Mar 22, 2025</td>
-                                <td>Apr 21, 2025</td>
-                                <td>$1,825.00</td>
-                                <td><span class="status draft">Unfinished</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0004" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-invoice="INV-2025-0005" data-client="Pied Piper" data-date="2025-03-20" data-duedate="2025-04-19" data-amount="3250" data-status="paid">
-                                <td>INV-2025-0005</td>
-                                <td>Pied Piper</td>
-                                <td>Mar 20, 2025</td>
-                                <td>Apr 19, 2025</td>
-                                <td>$3,250.00</td>
-                                <td><span class="status paid">Paid</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0005" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-invoice="INV-2025-0006" data-client="Dunder Mifflin" data-date="2025-03-24" data-duedate="2025-04-23" data-amount="2150" data-status="pending">
-                                <td>INV-2025-0006</td>
-                                <td>Dunder Mifflin</td>
-                                <td>Mar 24, 2025</td>
-                                <td>Apr 23, 2025</td>
-                                <td>$2,150.00</td>
-                                <td><span class="status pending">Pending</span></td>
-                                <td class="actions">
-                                    <button class="action-btn view-btn" data-invoice="INV-2025-0006" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit-btn" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn send-btn" title="Send">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                    <button class="action-btn more-btn" title="More">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                           
                         </tbody>
                     </table>
                 </div>
@@ -502,6 +368,11 @@
                         <button class="pagination-btn">
                             <i class="fas fa-chevron-right"></i>
                         </button>
+                    </div>
+                    <div class="go-to-page">
+                        <label for="goToPage">Ir para:</label>
+                        <input type="number" id="goToPage" min="1" value="1">
+                        <button class="go-btn" id="goToPageBtn">Ir</button>
                     </div>
                 </div>
             </div>
@@ -556,16 +427,6 @@
                                 <div class="form-group">
                                     <label for="clientTaxId">Tax ID (NUIT)</label>
                                     <input type="text" id="clientTaxId" placeholder="e.g. 123456789">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="clientNuit">Client NUIT</label>
-                                    <input type="text" id="clientNuit" placeholder="Client's NUIT">
-                                </div>
-                                <div class="form-group">
-                                    <label for="clientAddress">Client Address</label>
-                                    <input type="text" id="clientAddress" placeholder="Client's Address">
                                 </div>
                             </div>
                         </div>
@@ -636,7 +497,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <input type="text" id="description" placeholder="Description">
+                                <textarea id="description" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-row">
