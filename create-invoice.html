@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WALAKA - Create Invoice</title>
+    <title>WALAKA - Criar Fatura</title>
     
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts - Inter -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/invoice.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Menu -->
         <nav class="sidebar">
             <div class="logo">
                 <i class="fas fa-chart-line"></i>
@@ -100,9 +96,7 @@
             </div>
         </nav>
         
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Top Bar -->
             <div class="top-bar">
                 <button class="menu-toggle">
                     <i class="fas fa-bars"></i>
@@ -138,7 +132,6 @@
                 </div>
             </div>
             
-            <!-- Create Invoice Content -->
             <div class="page-header">
                 <div>
                     <h2>Create Invoice</h2>
@@ -151,7 +144,6 @@
                 </div>
             </div>
             
-            <!-- Create Invoice Form -->
             <div class="create-invoice-container">
                 <form id="invoiceForm" class="create-invoice-form">
                     <div class="form-grid">
@@ -239,7 +231,7 @@
                                         <th width="40%">Description</th>
                                         <th width="15%">Quantity</th>
                                         <th width="15%">Unit Price</th>
-                                        <th width="10%">VAT (16%)</th>
+                                        <th width="10%">VAT</th>
                                         <th width="15%">Total</th>
                                         <th width="5%"></th>
                                     </tr>
@@ -256,6 +248,13 @@
                                             <input type="number" class="item-price" value="0.00" min="0" step="0.01">
                                         </td>
                                         <td>
+                                            <select class="item-vat-rate">
+                                                <option value="0.16">16%</option>
+                                                <option value="0.05">5%</option>
+                                                <option value="included">Included</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                            <input type="number" class="item-vat-other" style="display:none;" placeholder="Enter VAT%">
                                             <span class="item-vat">0.00</span>
                                         </td>
                                         <td>
@@ -271,7 +270,7 @@
                             </table>
                         </div>
                         <button type="button" id="addItemBtn" class="btn secondary-btn">
-                            <i class="fas fa-plus"></i> Add Item
+                            <i class="fas fa-plus"></i> Adicionar Item
                         </button>
                         
                         <div class="invoice-totals">
@@ -280,7 +279,7 @@
                                 <span id="subtotal">0.00</span>
                             </div>
                             <div class="totals-row">
-                                <span>VAT (16%):</span>
+                                <span>VAT:</span>
                                 <span id="totalVat">0.00</span>
                             </div>
                             <div class="totals-row">
@@ -301,14 +300,12 @@
                     </div>
                     
                     <div class="form-footer">
-                        <button type="button" class="btn secondary-btn" id="saveAsDraftBtn">
-                            <i class="fas fa-save"></i> Unfinished
-                        </button>
+                        
                         <button type="button" class="btn secondary-btn" id="previewInvoiceBtn">
-                            <i class="fas fa-eye"></i> Preview
+                            <i class="fas fa-eye"></i> Visualizar
                         </button>
-                        <button type="submit" class="btn primary-btn">
-                            <i class="fas fa-check"></i> Create Invoice
+                        <button type="submit" class="btn primary-btn" id="createInvoiceBtn">
+                            <i class="fas fa-check"></i> Criar Fatura
                         </button>
                     </div>
                 </form>
@@ -316,8 +313,202 @@
         </div>
     </div>
 
-    <!-- JavaScript Dependencies -->
     <script src="js/dashboard.js"></script>
-    <script src="js/invoice.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addItemBtn = document.getElementById('addItemBtn');
+            const itemsTable = document.getElementById('itemsTable');
+            const previewInvoiceBtn = document.getElementById('previewInvoiceBtn');
+            const invoiceForm = document.getElementById('invoiceForm');
+            const createInvoiceBtn = document.getElementById('createInvoiceBtn');
+
+
+            function calculateTotals() {
+                const itemRows = itemsTable.querySelectorAll('.item-row');
+                let subtotal = 0;
+                let totalVat = 0;
+
+                itemRows.forEach(row => {
+                    const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                    const vatRateSelect = row.querySelector('.item-vat-rate');
+                    const vatRateValue = vatRateSelect.value;
+                    let itemVat = 0;
+
+                    if (vatRateValue === '0.16') {
+                        itemVat = quantity * price * 0.16;
+                    } else if (vatRateValue === '0.05') {
+                        itemVat = quantity * price * 0.05;
+                    } else if (vatRateValue === 'included') {
+                        itemVat = 0;
+                    } else if (vatRateValue === 'other') {
+                        const otherVatRate = parseFloat(row.querySelector('.item-vat-other').value) || 0;
+                        itemVat = quantity * price * (otherVatRate / 100);
+                    }
+
+                    row.querySelector('.item-vat').textContent = itemVat.toFixed(2);
+                    row.querySelector('.item-total').textContent = (quantity * price + itemVat).toFixed(2);
+
+                    subtotal += quantity * price;
+                    totalVat += itemVat;
+                });
+
+                document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+                document.getElementById('totalVat').textContent = totalVat.toFixed(2);
+                document.getElementById('invoiceTotal').textContent = (subtotal + totalVat).toFixed(2);
+            }
+
+            function addItemRow() {
+                const newRow = document.createElement('tr');
+                newRow.className = 'item-row';
+                newRow.innerHTML = `
+                    <td>
+                        <input type="text" class="item-description" placeholder="Enter item description">
+                    </td>
+                    <td>
+                        <input type="number" class="item-quantity" value="1" min="1" step="1">
+                    </td>
+                    <td>
+                        <input type="number" class="item-price" value="0.00" min="0" step="0.01">
+                    </td>
+                    <td>
+                        <select class="item-vat-rate">
+                            <option value="0.16">16%</option>
+                            <option value="0.05">5%</option>
+                            <option value="included">Included</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="number" class="item-vat-other" style="display:none;" placeholder="Enter VAT%">
+                        <span class="item-vat">0.00</span>
+                    </td>
+                    <td>
+                        <span class="item-total">0.00</span>
+                    </td>
+                    <td>
+                        <button type="button" class="remove-item-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                itemsTable.querySelector('tbody').appendChild(newRow);
+
+                const quantityInput = newRow.querySelector('.item-quantity');
+                const priceInput = newRow.querySelector('.item-price');
+                const vatRateSelect = newRow.querySelector('.item-vat-rate');
+                const otherVatInput = newRow.querySelector('.item-vat-other');
+                const removeButton = newRow.querySelector('.remove-item-btn');
+
+                quantityInput.addEventListener('input', calculateTotals);
+                priceInput.addEventListener('input', calculateTotals);
+                vatRateSelect.addEventListener('change', () => {
+                    if (vatRateSelect.value === 'other') {
+                        otherVatInput.style.display = 'inline-block';
+                    } else {
+                        otherVatInput.style.display = 'none';
+                    }
+                    calculateTotals();
+                });
+                otherVatInput.addEventListener('input', calculateTotals);
+                removeButton.addEventListener('click', () => {
+                    newRow.remove();
+                    calculateTotals();
+                });
+
+                calculateTotals();
+            }
+
+            addItemBtn.addEventListener('click', addItemRow);
+
+            itemsTable.addEventListener('input', (event) => {
+                if (event.target.classList.contains('item-quantity') || event.target.classList.contains('item-price')) {
+                    calculateTotals();
+                }
+            });
+
+            itemsTable.addEventListener('change', (event) => {
+                if (event.target.classList.contains('item-vat-rate')) {
+                    const selectedValue = event.target.value;
+                    const otherInput = event.target.nextElementSibling; // Get the input field
+                    if (selectedValue === 'other') {
+                        otherInput.style.display = 'inline-block';
+                    } else {
+                        otherInput.style.display = 'none';
+                    }
+                    calculateTotals();
+                }
+            });
+
+            itemsTable.addEventListener('input', (event) => {
+                 if (event.target.classList.contains('item-vat-other')) {
+                      calculateTotals();
+                 }
+            });
+
+            itemsTable.addEventListener('click', (event) => {
+                if (event.target.classList.contains('remove-item-btn')) {
+                    event.target.closest('tr').remove();
+                    calculateTotals();
+                }
+            });
+
+            function sendDataToTemplate(openNewWindow) {
+                // Coletar dados do formulário
+                const formData = new FormData(invoiceForm);
+                let invoiceData = {};
+                formData.forEach((value, key) => {
+                    invoiceData[key] = value;
+                });
+
+                // Coletar dados dos itens
+                const items = [];
+                const itemRows = itemsTable.querySelectorAll('.item-row');
+                itemRows.forEach(row => {
+                    const vatRateSelectValue = row.querySelector('.item-vat-rate').value;
+                    let vatRateText = '';
+                    if (vatRateSelectValue === "0.16") {
+                        vatRateText = "16%";
+                    } else if (vatRateSelectValue === "0.05") {
+                        vatRateText = "5%";
+                    } else if (vatRateSelectValue === "included") {
+                        vatRateText = "Incluído";
+                    } else {
+                        vatRateText = row.querySelector('.item-vat-other').value + "%";
+                    }
+                    items.push({
+                        description: row.querySelector('.item-description').value,
+                        quantity: row.querySelector('.item-quantity').value,
+                        price: row.querySelector('.item-price').value,
+                        vatRate: vatRateText,
+                        vat: row.querySelector('.item-vat').textContent,
+                        total: row.querySelector('.item-total').textContent
+                    });
+                });
+                invoiceData.items = items;
+
+                invoiceData.subtotal = document.getElementById('subtotal').textContent;
+                invoiceData.totalVat = document.getElementById('totalVat').textContent;
+                invoiceData.invoiceTotal = document.getElementById('invoiceTotal').textContent;
+
+                // Armazenar dados em localStorage
+                localStorage.setItem('invoiceData', JSON.stringify(invoiceData));
+
+                // Redirecionar para template01.html
+                if (openNewWindow) {
+                    window.open('template01.html', '_blank');
+                } else {
+                    window.location.href = 'template01.html';
+                }
+            }
+
+            previewInvoiceBtn.addEventListener('click', () => {
+                sendDataToTemplate(true); // Abrir em uma nova janela
+            });
+
+            createInvoiceBtn.addEventListener('click', (event) => {
+                event.preventDefault(); // Impedir o envio do formulário
+                sendDataToTemplate(false); // Redirecionar na mesma janela
+            });
+        });
+    </script>
 </body>
 </html>
