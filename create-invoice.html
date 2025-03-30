@@ -14,7 +14,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/invoice.css">
-    <script src="https://cdn.supabase.com/supabase-js-v2.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -152,15 +151,6 @@
                 </div>
             </div>
             
-            <div class="page-header">
-                <div>
-                    <h2>Existing Invoices</h2>
-                    <p class="subtitle">A list of existing invoices</p>
-                </div>
-            </div>
-            <div id="invoices-container">
-            </div>
-            
             <!-- Create Invoice Form -->
             <div class="create-invoice-container">
                 <form id="invoiceForm" class="create-invoice-form">
@@ -237,22 +227,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="issuerName">Issuer Name</label>
-                                    <input type="text" id="issuerName" placeholder="Issuer Name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="issuerNuit">Issuer NUIT</label>
-                                    <input type="text" id="issuerNuit" placeholder="Issuer NUIT">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                 <div class="form-group">
-                                    <label for="issuerAddress">Issuer Address</label>
-                                    <textarea id="issuerAddress" rows="2" placeholder="Issuer Address"></textarea>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     
@@ -324,18 +298,6 @@
                                 <textarea id="notes" rows="3" placeholder="Add any additional notes or terms..."></textarea>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="paymentConditions">Payment Conditions</label>
-                                <textarea id="paymentConditions" rows="2" placeholder="Payment Conditions"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="legalInfo">Legal Information</label>
-                                <textarea id="legalInfo" rows="2" placeholder="Legal Information"></textarea>
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="form-footer">
@@ -357,62 +319,5 @@
     <!-- JavaScript Dependencies -->
     <script src="js/dashboard.js"></script>
     <script src="js/invoice.js"></script>
-    <script>
-        // Initialize the Supabase client
-        const SUPABASE_URL = 'https://icirwhacigwjrxisvayj.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImljaXJ3aGFjaWd3anJ4aXN2YXlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyNzc5NzQsImV4cCI6MjA1NDg1Mzk3NH0.A8bVciC-NDwYoWMP8ijXBgNlEplYNTf6VGVe5G7SnFk';
-
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Fetch data from the invoices table
-        async function fetchInvoices() {
-            let { data: invoices, error } = await supabase
-                .from('invoices')
-                .select('*'); // Select all columns
-
-            if (error) {
-                console.error('Error fetching invoices:', error);
-                return [];
-            }
-
-            return invoices;
-        }
-
-        // Display the invoices on your page
-        async function displayInvoices() {
-            const invoices = await fetchInvoices();
-            const invoicesContainer = document.getElementById('invoices-container');
-
-            if (invoicesContainer) {
-                invoices.forEach(invoice => {
-                    const invoiceElement = document.createElement('div');
-                    invoiceElement.innerHTML = `
-                        <h2>Invoice #${invoice.invoice_number}</h2>
-                        <p>Issue Date: ${invoice.issue_date}</p>
-                        <p>Issuer: ${invoice.issuer_name} (${invoice.issuer_nuit}), ${invoice.issuer_address}</p>
-                        <p>Client: ${invoice.client_name} (${invoice.client_nuit}), ${invoice.client_address}</p>
-                        <p>Description: ${invoice.description}</p>
-                        <p>Total (Excl. VAT): ${invoice.total_without_taxes}</p>
-                        <p>VAT Rate: ${invoice.vat_rate}%</p>
-                        <p>VAT Amount: ${invoice.vat_amount}</p>
-                        <p>Total Payable: ${invoice.total_amount_payable}</p>
-                        <p>Payment Conditions: ${invoice.payment_conditions}</p>
-                        <p>Legal Info: ${invoice.legal_info}</p>
-                        <p>Created At: ${invoice.created_at}</p>
-                        <p>User ID: ${invoice.user_id}</p>
-                        <p>ID: ${invoice.id}</p>
-                    `;
-                    invoicesContainer.appendChild(invoiceElement);
-                });
-            } else {
-                console.error('Invoices container not found.');
-            }
-        }
-
-        // Call the displayInvoices function when the page loads
-        displayInvoices();
-    </script>
-
-    
 </body>
 </html>
