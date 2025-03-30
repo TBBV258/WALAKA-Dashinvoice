@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WALAKA</title>
+  
+  <!-- Bibliotecas externas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+:root {
+      --primary-color: #007ec7; /* Corporate blue */
+      --secondary-color: #4f46e5;
+      --accent-color: #818cf8;
+      --background-color: #f8fafc;
+      --sidebar-width: 280px;
+      --topbar-height: 60px;
+      --card-radius: 16px;
+      --transition-speed: 0.3s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--background-color);
+      color: #1e293b;
+      min-height: 100vh;
+      overflow-x: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: linear-gradient(195deg, #007ec7, #02204e);
+      color: white;
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--card-radius);
+      transition: all var(--transition-speed) ease;
+    }
+
+    .logo:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--card-radius);
+      color: #94a3b8;
+      text-decoration: none;
+      transition: all var(--transition-speed) ease;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-item:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    .nav-item i {
+      width: 24px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      margin-top: var(--topbar-height);
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: var(--sidebar-width);
+      height: var(--topbar-height);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--card-radius);
+      font-size: 0.9rem;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--primary-color);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #64748b;
+      padding: 0 8px;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      z-index: 1000;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 100%;
+      margin-top: 10px;
+    }
+
+    .dropdown-menu a {
+      color: #1e293b;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f1f5f9;
+    }
+
+    .user-profile:hover .dropdown-menu {
+      display: block;
+    }
+
+    /* Cards and Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 0.5rem 0;
+    }
+
+    .metric-label {
+      color: #64748b;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    /* Recent Transactions Table */
+    .recent-transactions {
+      background: white;
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .recent-transactions table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .recent-transactions th,
+    .recent-transactions td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .recent-transactions th {
+      color: #64748b;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .recent-transactions td {
+      color: #1e293b;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .quick-action-card {
+      background: white;
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: transform var(--transition-speed) ease;
+      text-align: center;
+    }
+
+    .quick-action-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .quick-action-card i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-action-card span {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        z-index: 1000;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .top-bar {
+        left: 0;
+      }
+
+      .main-content {
+        margin-top: calc(var(--topbar-height) + 1rem);
+        padding: 1rem;
+      }
+    }
+
+    .sign-out-btn {
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sign-out-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary-color);
+    }
+
+    /* Add to existing styles */
+    .nav-section {
+      margin-top: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+
+    .nav-section h3 {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-header i {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .metric-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .metric-change {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .metric-change.positive {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+
+    .metric-change.negative {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    /* Quick Actions Grid */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .action-card {
+      background: white;
+      padding: 1rem;
+      border-radius: var(--card-radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .quick-create {
+      position: relative;
+      margin: 0 1rem;
+    }
+
+    .quick-create-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quick-create-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      width: 200px;
+      z-index: 1000;
+    }
+
+    .quick-create-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      color: #1e293b;
+      text-decoration: none;
+    }
+
+    .quick-create-menu a:hover {
+      background: #f1f5f9;
+    }
+
+    .quick-create:hover .quick-create-menu {
+      display: block;
+    }
+  </style>
+
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="logo">
+        <i class="fas fa-chart-line"></i>
+        WALAKA
+      </div>
+      <div class="nav-menu">
+        <a href="#" class="nav-item active">
+          <i class="fas fa-home"></i>
+          Dashboard
+        </a>
+        <a href="invoice.html" class="nav-item">
+          <i class="fas fa-file-invoice"></i>
+          Facturas
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-wallet"></i>
+          Contas
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-chart-pie"></i>
+          Relatórios
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fas fa-cog"></i>
+          Configurações
+        </a>
+        <div class="nav-section">
+          <h3>Enterprise</h3>
+          <a href="#" class="nav-item">
+            <i class="fas fa-boxes"></i>
+            Inventory
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-users"></i>
+            HR/Payroll
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            Purchase
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-truck"></i>
+            Manufacturing
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <h3>Analytics</h3>
+          <a href="#" class="nav-item">
+            <i class="fas fa-chart-line"></i>
+            Key Metrics
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-file-alt"></i>
+            Reports
+          </a>
+        </div>
+
+        <!-- Add after the existing nav-menu items -->
+        <div class="nav-section">
+          <h3>Core Business / Negócio Principal</h3>
+          <a href="sales/quotations.html" class="nav-item">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Quotations / Cotações
+          </a>
+          <a href="sales/orders.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            Sales Orders / Pedidos
+          </a>
+          <a href="purchases/orders.html" class="nav-item">
+            <i class="fas fa-truck"></i>
+            Purchase Orders / Compras
+          </a>
+        </div>
+
+        <!-- Inventory -->
+        <div class="nav-section">
+          <h3>Inventory / Estoque</h3>
+          <a href="products.html" class="nav-item">
+            <i class="fas fa-box"></i>
+            Items / Produtos
+          </a>
+          <a href="inventory/stock.html" class="nav-item">
+            <i class="fas fa-warehouse"></i>
+            Stock / Estoque
+          </a>
+          <a href="inventory/movements.html" class="nav-item">
+            <i class="fas fa-exchange-alt"></i>
+            Movements / Movimentos
+          </a>
+        </div>
+
+        <!-- Accounting -->
+        <div class="nav-section">
+          <h3>Accounting / Contabilidade</h3>
+          <a href="accounting/journal.html" class="nav-item">
+            <i class="fas fa-book"></i>
+            Journal Entries / Lançamentos
+          </a>
+          <a href="accounting/accounts.html" class="nav-item">
+            <i class="fas fa-list-alt"></i>
+            Chart of Accounts / Plano de Contas
+          </a>
+          <a href="accounting/taxes.html" class="nav-item">
+            <i class="fas fa-percent"></i>
+            Taxes / Impostos
+          </a>
+        </div>
+
+        <!-- HR -->
+        <div class="nav-section">
+          <h3>HR / Recursos Humanos</h3>
+          <a href="hr/employees.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            Employees / Funcionários
+          </a>
+          <a href="hr/payroll.html" class="nav-item">
+            <i class="fas fa-money-check-alt"></i>
+            Payroll / Folha de Pagamento
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="search-bar">
+          <input type="text" placeholder="Pesquisar...">
+        </div>
+        <div class="quick-create">
+          <button class="quick-create-btn">
+            <i class="fas fa-plus"></i>
+            Create New
+          </button>
+          <div class="quick-create-menu">
+            <a href="invoice.html"><i class="fas fa-file-invoice"></i> Sales Invoice</a>
+            <a href="#"><i class="fas fa-user"></i> Customer</a>
+            <a href="#"><i class="fas fa-box"></i> Product</a>
+          </div>
+        </div>
+        <div class="user-menu">
+          <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="badge">0</span>
+          </div>
+          <div class="user-profile">
+            <div class="avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span id="user-name">Loading...</span>
+            <div class="dropdown">
+              <button class="dropdown-toggle"><i class="fas fa-caret-down"></i></button>
+              <div class="dropdown-menu">
+                <a href="profile.html">Profile Management</a>
+                <a href="settings.html">General Settings</a>
+              </div>
+            </div>
+          </div>
+          <button class="sign-out-btn" onclick="handleSignOut()">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ações Rápidas -->
+      <div class="quick-actions">
+        <div class="quick-action-card" onclick="window.location.href='invoice.html'">
+          <i class="fas fa-file-invoice"></i>
+          <span>Fatura de Vendas</span>
+        </div>
+        <div class="quick-action-card">
+          <i class="fas fa-user"></i>
+          <span>Cliente</span>
+        </div>
+        <div class="quick-action-card">
+          <i class="fas fa-box"></i>
+          <span>Produto</span>
+        </div>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <!-- Sales Metrics -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <i class="fas fa-chart-line"></i>
+            <span>Sales Overview / Visão Geral de Vendas</span>
+          </div>
+          <div class="metric-value">0 MZN</div>
+          <div class="metric-footer">
+            <span class="metric-label">This Month / Este Mês</span>
+            <span class="metric-change positive">+12.04%</span>
+          </div>
+        </div>
+
+        <!-- Purchase Metrics -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Purchase Orders / Pedidos de Compra</span>
+          </div>
+          <div class="metric-value">0</div>
+          <div class="metric-footer">
+            <span class="metric-label">Pending / Pendentes</span>
+          </div>
+        </div>
+
+        <!-- Inventory Value -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <i class="fas fa-warehouse"></i>
+            <span>Inventory Value / Valor do Estoque</span>
+          </div>
+          <div class="metric-value">0 MZN</div>
+          <div class="metric-footer">
+            <span class="metric-label">Total Items / Total de Itens: 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="chart-card">
+        <h3>Faturação Últimos 7 Dias</h3>
+        <div class="chart-container">
+          <canvas id="recentInvoicesChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Distribuição de Saldos</h3>
+        <div class="chart-container">
+          <canvas id="balanceDistributionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="recent-transactions">
+        <h3>Transações Recentes</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01/10/2023</td>
+              <td>Pagamento de Cliente</td>
+              <td>0 MZN</td>
+              <td><span class="status completed">Concluído</span></td>
+            </tr>
+            <tr>
+              <td>30/09/2023</td>
+              <td>Pagamento de Fornecedor</td>
+              <td>0 MZN</td>
+              <td><span class="status pending">Pendente</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="quick-actions-grid">
+        <div class="action-card" onclick="window.location.href='sales/new-quotation.html'">
+          <i class="fas fa-file-invoice"></i>
+          <h4>New Quotation / Nova Cotação</h4>
+        </div>
+        
+        <div class="action-card" onclick="window.location.href='sales/new-order.html'">
+          <i class="fas fa-cart-plus"></i>
+          <h4>New Sales Order / Novo Pedido</h4>
+        </div>
+        
+        <div class="action-card" onclick="window.location.href='inventory/new-item.html'">
+          <i class="fas fa-box-open"></i>
+          <h4>New Item / Novo Produto</h4>
+        </div>
+        
+        <div class="action-card" onclick="window.location.href='accounting/new-entry.html'">
+          <i class="fas fa-book"></i>
+          <h4>New Journal Entry / Novo Lançamento</h4>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SEÇÃO DE SCRIPTS -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
+  
+    const supabaseUrl = 'https://zqnthduqpzriydgbdojy.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxbnRoZHVxcHpyaXlkZ2Jkb2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4OTkzOTcsImV4cCI6MjA1NzQ3NTM5N30.fZqsPqkbJ4m-Lp7BRTAOuxU5_6MXj8QJERUTreshKIU';
+  
+    const supabase = createClient(supabaseUrl, supabaseKey);
+  
+    async function displayUserName() {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          console.error('Erro ao obter sessão:', error?.message);
+          document.getElementById('user-name').textContent = 'Não logado';
+          return;
+        }
+    
+        const user = session.user;
+        if (!user) {
+          document.getElementById('user-name').textContent = 'Não logado';
+          return;
+        }
+  
+        const { data: profileData, error: profileError } = await supabase
+          .from('users')
+          .select('username, logo')
+          .eq('id', user.id)
+          .single();
+  
+        if (profileError) {
+          console.error('Erro ao buscar perfil:', profileError.message);
+          return;
+        }
+  
+        const userNameSpan = document.getElementById('user-name');
+        if (userNameSpan) {
+          userNameSpan.textContent = profileData.username || 'Usuário Desconhecido';
+        }
+  
+        const userAvatar = document.querySelector('.avatar');
+        if (userAvatar && profileData.logo) {
+          userAvatar.innerHTML = `<img src="${profileData.logo}" alt="User Logo" style="width: 100%; height: 100%; border-radius: 50%;">`;
+        }
+      } catch (err) {
+        console.error('Erro inesperado:', err);
+      }
+    }
+  
+    async function updateActiveClientCount() {
+      try {
+        const { count, error } = await supabase
+          .from('clients')
+          .select('*', { count: 'exact' })
+          .eq('status', 'active');
+    
+        if (error) {
+          console.error('Error fetching active client count:', error);
+          return;
+        }
+    
+        const activeClientMetric = document.querySelector('.metric-card:nth-child(2) .metric-value');
+        if (activeClientMetric) {
+          activeClientMetric.textContent = count || 0;
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    }
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      displayUserName();
+      updateActiveClientCount(); // Fetch and display active client count
+    });
+  </script>
+  
+  
+  <script>
+    // Exemplo de uso do Chart.js (já está certo no seu código)
+    const recentInvoicesChart = new Chart(document.getElementById('recentInvoicesChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        datasets: [{
+          label: 'Valor Faturado',
+          data: [1000, 3000, 9000, 27000, 74000, 221000, 690000],
+          backgroundColor: '#6366f1',
+          borderWidth: 0,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: '#e2e8f0' },
+            ticks: {
+              callback: value => `${(value / 1000).toFixed(0)}k MZN`
+            }
+          },
+          x: {
+            grid: { display: false }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    const balanceDistributionChart = new Chart(document.getElementById('balanceDistributionChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Disponível', 'Bloqueado', 'A Receber', 'Em Atraso'],
+        datasets: [{
+          data: [542300, 150000, 234500, 87500],
+          backgroundColor: ['#6366f1', '#4f46e5', '#818cf8', '#a5b4fc']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.label}: ${(ctx.raw / 1000).toFixed(1)}k MZN`
+            }
+          }
+        }
+      }
+    });
+
+    // Mobile Menu Toggle
+    const menuToggle = document.createElement('div');
+    menuToggle.className = 'menu-toggle';
+    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    document.querySelector('.top-bar').prepend(menuToggle);
+
+    menuToggle.addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    });
+
+    // Page Load Animation
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+
+    // Botão de export (exemplo simples)
+    document.getElementById('exportDataButton').addEventListener('click', () => {
+      fetch('/export')
+        .then(response => response.json())
+        .then(data => {
+          console.log('Exported Data:', data);
+        })
+        .catch(error => console.error('Erro ao exportar dados:', error));
+    });
+
+    function visualizarFactura(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Visualizar Factura:", invoiceId);
+      // Implement your logic here (e.g., open a modal, navigate to a view page)
+    }
+
+    function editarFactura(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Editar Factura:", invoiceId);
+      // Implement your logic here (e.g., navigate to an edit page)
+    }
+
+    function anularFactura(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Anular Factura:", invoiceId);
+      // Implement your logic here (e.g., show a confirmation dialog, make an API call)
+    }
+
+    function enviarFactura(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Enviar Factura:", invoiceId);
+      // Implement your logic here (e.g., open an email composer with the invoice attached)
+    }
+
+    function gravarFactura(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Gravar Factura:", invoiceId);
+      // Implement your logic here (e.g., save the current state of the invoice)
+    }
+
+    function addPayment(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Add Payment for Invoice:", invoiceId);
+      // Implement your logic here (e.g., show a payment form)
+    }
+
+    function addCreditNote(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Add Credit Note for Invoice:", invoiceId);
+      // Implement your logic here (e.g., show a credit note form)
+    }
+
+    function setupRecurringInvoice(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Setup Recurring Invoice:", invoiceId);
+      // Implement your logic here (e.g., show a recurring invoice setup form)
+    }
+
+    function addComment(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("Add Comment for Invoice:", invoiceId);
+      // Implement your logic here (e.g., show a comment input field)
+    }
+
+    function viewHistory(button) {
+      const invoiceId = button.closest('div.invoice-actions').parentNode.querySelector('td[data-invoice-id]').dataset.invoiceId;
+      console.log("View History for Invoice:", invoiceId);
+      // Implement your logic here (e.g., fetch and display the invoice history)
+    }
+  </script>
+</body>
+</html>
