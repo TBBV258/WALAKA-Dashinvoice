@@ -204,6 +204,14 @@
                     <input type="text" id="signupName" required placeholder="Enter your full name">
                 </div>
                 <div class="form-group">
+                    <label for="signupCompanyName">Company Name</label>
+                    <input type="text" id="signupCompanyName" placeholder="Enter your company name">
+                </div>
+                <div class="form-group">
+                    <label for="signupNuit">NUIT</label>
+                    <input type="text" id="signupNuit" placeholder="Enter your NUIT">
+                </div>
+                <div class="form-group">
                     <label for="signupEmail">Email Address</label>
                     <input type="email" id="signupEmail" required placeholder="Enter your email">
                 </div>
@@ -214,6 +222,10 @@
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" required placeholder="Confirm your password">
+                </div>
+                <div class="form-group">
+                    <label for="signupLogo">Upload Logo</label>
+                    <input type="file" id="signupLogo" accept="image/*">
                 </div>
                 <button type="submit">Create Account</button>
             </form>
@@ -268,9 +280,12 @@
         async function handleSignup(event) {
             event.preventDefault();
             const name = document.getElementById('signupName').value;
+            const companyName = document.getElementById('signupCompanyName').value;
+            const nuit = document.getElementById('signupNuit').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const logoFile = document.getElementById('signupLogo').files[0];
 
             if (password !== confirmPassword) {
                 alert("Passwords don't match!");
@@ -286,14 +301,60 @@
                     email: email,
                     password: password,
                     options: {
-                        data: { username: name }
+                        data: { 
+                            username: name,
+                            company_name: companyName,
+                            nuit: nuit
+                         }
                     }
                 });
 
                 if (error) throw error;
 
                 console.log('Signed up:', data);
-                alert('Please check your email for verification link');
+
+                // Upload logo if provided
+                if (logoFile) {
+                    const { data: uploadData, error: uploadError } = await supabaseClient
+                        .storage
+                        .from('logos')
+                        .upload(`${data.user.id}/${logoFile.name}`, logoFile, {
+                            cacheControl: '3600',
+                            upsert: false
+                        });
+
+                    if (uploadError) {
+                        console.error('Error uploading logo:', uploadError.message);
+                        alert('Error uploading logo. Please try again.');
+                    } else {
+                        const logoUrl = `https://zqnthduqpzriydgbdojy.supabase.co/storage/v1/object/public/logos/${uploadData.path}`;
+                        
+                        // Update user metadata with logo URL
+                        const { data: updateData, error: updateError } = await supabaseClient
+                            .from('users')
+                            .insert([{ id: data.user.id, username: name, company_name: companyName, nuit: nuit, logo: logoUrl }]);
+
+                        if (updateError) {
+                            console.error('Error updating user profile:', updateError.message);
+                            alert('Error updating user profile. Please try again.');
+                        } else {
+                            alert('Account created! Please check your email for verification link.');
+                        }
+                    }
+                } else {
+                    // If no logo, create user profile without logo URL
+                    const { data: updateData, error: updateError } = await supabaseClient
+                        .from('users')
+                        .insert([{ id: data.user.id, username: name, company_name: companyName, nuit: nuit }]);
+
+                    if (updateError) {
+                        console.error('Error updating user profile:', updateError.message);
+                        alert('Error updating user profile. Please try again.');
+                    } else {
+                        alert('Account created! Please check your email for verification link.');
+                    }
+                }
+
                 toggleForms(); // Switch back to login form
             } catch (error) {
                 console.error('Error signing up:', error.message);
