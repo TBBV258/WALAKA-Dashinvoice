@@ -432,52 +432,127 @@
       padding: 0.5rem 0;
       border-bottom: 1px solid #e2e8f0; /* Add a separator below the header */
     }
+
+    .client-item .status-btn.active {
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 128, 0, 0.5);
+    }
+
+    .client-item .status-btn.inactive {
+      background-color: red;
+      color: white;
+      font-weight: bold;
+      border: 2px solid white;
+    }
   </style>
 </head>
 <body>
   <div class="dashboard-container">
-    <!-- Sidebar -->
+    <!-- Sidebar Menu -->
     <nav class="sidebar">
       <div class="logo">
         <i class="fas fa-chart-line"></i>
-        WALAKA
+        <span>WALAKA</span>
       </div>
+
       <div class="nav-menu">
         <a href="dashboard.html" class="nav-item">
           <i class="fas fa-home"></i>
-          Dashboard
+          <span>Dashboard</span>
         </a>
-        <a href="invoice.html" class="nav-item">
-          <i class="fas fa-file-invoice"></i>
-          Facturas
+
+        <div class="nav-section">
+          <h3>Invoicing</h3>
+        </div>
+        <a href="invoices.html" class="nav-item">
+          <i class="fas fa-file-invoice-dollar"></i>
+          <span>Invoices</span>
         </a>
+
         <a href="clients.html" class="nav-item active">
           <i class="fas fa-users"></i>
-          Clientes
+          <span>Clients</span>
         </a>
+
         <a href="products.html" class="nav-item">
-          <i class="fas fa-box"></i>
-          Produtos
+          <i class="fas fa-shopping-cart"></i>
+          <span>Products</span>
+        </a>
+
+        <!--<a href="#" class="nav-item">
+                    <i class="fas fa-percentage"></i>
+                    <span>Taxes</span>
+                </a>-->
+
+
+
+        <div class="nav-section">
+          <h3>Commercial</h3>
+        </div>
+        <a href="#" class="nav-item">
+          <i class="fas fa-boxes"></i>
+          <span>Stock</span>
         </a>
         <a href="#" class="nav-item">
-          <i class="fas fa-wallet"></i>
-          Contas
+          <i class="fas fa-truck"></i>
+          <span>Suppliers</span>
         </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Movements</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-money-bill-wave"></i>
+          <span>Expenses</span>
+        </a>
+        <div class="nav-section">
+          <h3>Accounting </h3>
+          <a href="#" class="nav-item">
+            <i class="fas fa-book"></i>
+            <span>Entries</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-list-alt"></i>
+            <span> Chart of Accounts</span>
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-percent"></i>
+            <span>Taxes</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <h3>Finances</h3>
+        </div>
+
         <a href="#" class="nav-item">
           <i class="fas fa-chart-pie"></i>
-          Relatórios
+          <span>Reports</span>
         </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          Key Metrics
+        </a>
+
+        <div class="nav-section">
+          <h3>Settings</h3>
+        </div>
         <a href="settings.html" class="nav-item">
           <i class="fas fa-cog"></i>
-          Configurações
+          <span>Settings</span>
         </a>
-        <a href="#" class="nav-item" onclick="handleSignOut()">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Sign Out</span>
+        <a href="profile.html" class="nav-item">
+          <i class="fas fa-user-cog"></i>
+          <span>Account</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-question-circle"></i>
+          <span>Help</span>
         </a>
       </div>
     </nav>
-
     <!-- Main Content -->
     <main class="main-content">
       <!-- Top Bar -->
@@ -734,11 +809,10 @@
         const clientItem = document.createElement('div');
         clientItem.className = 'client-item';
         clientItem.innerHTML = `
-          <span>${client.name} - ${client.nuit || 'N/A'} - ${client.email || 'N/A'} - ${client.phone || 'N/A'} - ${client.status}</span>
+          <span>${client.name} - ${client.nuit || 'N/A'} - ${client.email || 'N/A'} - ${client.phone || 'N/A'} - <span class="status-btn ${client.status === 'active' ? 'active' : 'inactive'}">${client.status}</span></span>
           <div>
             <button class="edit-btn" onclick="editClient(${index})">Edit</button>
             <button class="delete-btn" onclick="deleteClient(${index})">Delete</button>
-            <button class="status-btn" onclick="toggleClientStatus(${index})">${client.status === 'active' ? 'Inactivate' : 'Activate'}</button>
           </div>
         `;
         clientList.appendChild(clientItem);
@@ -781,6 +855,60 @@
         } else {
           item.style.display = 'none';
         }
+      });
+    }
+
+    // Example: When a new client is added
+    function addClient(client) {
+      let clients = JSON.parse(localStorage.getItem('clients')) || [];
+      client.id = generateClientId(); // Generate a unique ID for the client
+      clients.push(client);
+      localStorage.setItem('clients', JSON.stringify(clients));
+    }
+
+    // Example: When a client is updated
+    function updateClient(client) {
+      let clients = JSON.parse(localStorage.getItem('clients')) || [];
+      const index = clients.findIndex(c => c.id === client.id);
+      if (index !== -1) {
+        clients[index] = client;
+        localStorage.setItem('clients', JSON.stringify(clients));
+      }
+    }
+
+    // Example: Function to generate a unique client ID
+    function generateClientId() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    // Função para buscar nomes de clientes da tabela clients no Supabase
+    async function fetchClientNames() {
+      const { data, error } = await supabase
+        .from('clients') // Referência à tabela clients
+        .select('id, name'); // Selecionar as colunas id e name
+
+      if (error) {
+        console.error('Erro ao buscar nomes de clientes:', error);
+        return [];
+      }
+
+      return data; // Retornar o array de objetos de clientes
+    }
+
+    // Chamar a função e registrar os resultados
+    fetchClientNames().then(clientNames => {
+      console.log('Nomes dos Clientes:', clientNames);
+      // Você também pode preencher um dropdown ou realizar outras ações com os nomes dos clientes aqui
+    });
+
+    async function populateClientOptions() {
+      const clients = await fetchClientNames(); // Buscar nomes de clientes do Supabase
+      clientNameSelect.innerHTML = '<option value="" disabled selected>Select a client</option>'; // Limpar opções existentes
+      clients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.id; // Assumindo que cada cliente tem um ID exclusivo
+        option.textContent = client.name; // Assumindo que cada cliente tem uma propriedade de nome
+        clientNameSelect.appendChild(option);
       });
     }
   </script>
