@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo de Fatura Minimalista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --text-color: #2d3436;
+            --light-text: #636e72;
+            --background: #ffffff;
+            --light-bg: #f7f7f7;
+            --border-color: #dfe6e9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--background);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            max-height: 60px;
+            max-width: 200px;
+        }
+
+        .invoice-title {
+            text-align: right;
+        }
+
+        .invoice-title h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .invoice-title p {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .client-details, .invoice-details {
+            flex: 1;
+        }
+
+        .invoice-details {
+            text-align: right;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .client-details p, .invoice-details p {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: var(--text-color);
+        }
+
+        .detail-label {
+            font-weight: 500;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .items-table th {
+            background-color: var(--light-bg);
+            text-align: left;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .items-table td {
+            padding: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .items-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .items-table .amount-column {
+            text-align: right;
+        }
+
+        .invoice-summary {
+            margin-left: auto;
+            width: 40%;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .summary-row.total {
+            font-size: 18px;
+            font-weight: 600;
+            border-top: 2px solid var(--primary-color);
+            padding-top: 14px;
+            margin-top: 8px;
+        }
+
+        .invoice-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .notes {
+            font-size: 13px;
+            color: var(--light-text);
+            margin-bottom: 20px;
+        }
+
+        .thank-you {
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--primary-color);
+        }
+
+        @media print {
+            body {
+                background-color: var(--background);
+                padding: 0;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                max-width: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="logo-container">
+                <div id="company-logo">
+                    <!-- Logo will be inserted here -->
+                </div>
+            </div>
+            <div class="invoice-title">
+                <h1>Fatura</h1>
+                <p id="display-invoice-number">Nº 0001</p>
+            </div>
+        </div>
+
+        <div class="invoice-info">
+            <div class="client-details">
+                <h2 class="section-title">Dados do Cliente</h2>
+                <p><span class="detail-label">Nome:</span> <span id="display-client-name"></span></p>
+                <p><span class="detail-label">Endereço:</span> <span id="display-address"></span></p>
+                <p><span class="detail-label">NUIT:</span> <span id="display-nuit"></span></p>
+                <p><span class="detail-label">Email:</span> <span id="display-mail-address"></span></p>
+                <p><span class="detail-label">Contato:</span> <span id="display-contact"></span></p>
+            </div>
+            <div class="invoice-details">
+                <h2 class="section-title">Detalhes da Fatura</h2>
+                <p><span class="detail-label">Data de Emissão:</span> <span id="display-issue-date"></span></p>
+                <p><span class="detail-label">Data de Vencimento:</span> <span id="display-due-date"></span></p>
+                <p><span class="detail-label">Projeto:</span> <span id="display-project-name"></span></p>
+                <p><span class="detail-label">Condições de Pagamento:</span> <span id="display-payment-terms"></span></p>
+            </div>
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Qtd</th>
+                    <th>Preço</th>
+                    <th>IVA (%)</th>
+                    <th class="amount-column">Total</th>
+                </tr>
+            </thead>
+            <tbody id="display-items">
+                <!-- Items will be inserted here -->
+            </tbody>
+        </table>
+
+        <div class="invoice-summary">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="display-subtotal"></span>
+            </div>
+            <div class="summary-row">
+                <span>IVA:</span>
+                <span id="display-iva"></span>
+            </div>
+            <div class="summary-row">
+                <span>Desconto:</span>
+                <span id="display-discount"></span>
+            </div>
+            <div class="summary-row total">
+                <span>Total:</span>
+                <span id="display-total"></span>
+            </div>
+        </div>
+
+        <div class="invoice-footer">
+            <div class="notes">
+                <h2 class="section-title">Observações</h2>
+                <p id="display-notes"></p>
+            </div>
+            <div class="thank-you">
+                Obrigado pela sua preferência!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadInvoiceData() {
+            // Get template settings
+            const templateSettings = JSON.parse(localStorage.getItem('templateSettings'));
+            if (templateSettings) {
+                // Apply color theme
+                document.documentElement.style.setProperty('--primary-color', templateSettings.color);
+                
+                // Apply logo
+                if (templateSettings.logo) {
+                    const logoDiv = document.getElementById('company-logo');
+                    logoDiv.innerHTML = `<img src="${templateSettings.logo}" alt="Logo da Empresa" class="logo">`;
+                }
+            }
+
+            // Get data from localStorage
+            const invoiceData = JSON.parse(localStorage.getItem('invoiceData'));
+            if (!invoiceData) return;
+            
+            // Populate client info
+            document.getElementById('display-client-name').textContent = invoiceData.clientName || '';
+            document.getElementById('display-address').textContent = invoiceData.address || '';
+            document.getElementById('display-nuit').textContent = invoiceData.nuit || '';
+            document.getElementById('display-mail-address').textContent = invoiceData.mailAddress || '';
+            document.getElementById('display-contact').textContent = invoiceData.contact || '';
+
+            // Populate invoice details
+            document.getElementById('display-invoice-number').textContent = `Nº ${invoiceData.invoiceNumber || ''}`;
+            document.getElementById('display-issue-date').textContent = invoiceData.issueDate || '';
+            document.getElementById('display-due-date').textContent = invoiceData.dueDate || '';
+            document.getElementById('display-project-name').textContent = invoiceData.projectName || '';
+            document.getElementById('display-payment-terms').textContent = invoiceData.paymentTerms || '';
+
+            // Populate items
+            const itemsContainer = document.getElementById('display-items');
+            itemsContainer.innerHTML = ''; // Clear existing items
+            
+            invoiceData.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.description}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price}</td>
+                    <td>${item.iva}%</td>
+                    <td class="amount-column">${item.total}</td>
+                `;
+                itemsContainer.appendChild(row);
+            });
+
+            // Populate totals
+            document.getElementById('display-subtotal').textContent = invoiceData.subtotal;
+            document.getElementById('display-iva').textContent = invoiceData.totalTax;
+            document.getElementById('display-discount').textContent = invoiceData.discount;
+            document.getElementById('display-total').textContent = invoiceData.total;
+            document.getElementById('display-notes').textContent = invoiceData.notes || '';
+        }
+
+        document.addEventListener('DOMContentLoaded', loadInvoiceData);
+    </script>
+</body>
+</html>
