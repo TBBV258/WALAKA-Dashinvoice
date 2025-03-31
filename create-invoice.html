@@ -151,16 +151,14 @@
                             <h3>Client Information</h3>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="clientName">Client Name/Company</label>
-                                    <select id="clientName" required>
+                                    <label for="clientSelect">Client Name/Company</label>
+                                    <select id="clientSelect" required>
                                         <option value="" disabled selected>Select a client</option>
-                                        <option value="Globex Industries">Globex Industries</option>
-                                        <option value="Stark Industries">Stark Industries</option>
-                                        <option value="Wayne Enterprises">Wayne Enterprises</option>
-                                        <option value="Acme Corp">Acme Corp</option>
-                                        <option value="Pied Piper">Pied Piper</option>
-                                        <option value="Dunder Mifflin">Dunder Mifflin</option>
                                     </select>
+                                    <input type="text" id="clientName" placeholder="Or enter a new client name" />
+                                    <button type="button" class="btn secondary-btn" id="addClientBtn">
+                                        <i class="fas fa-plus"></i> Add Client
+                                    </button>
                                 </div>
                                 <div class="form-group">
                                     <label for="clientEmail">Email</label>
@@ -313,15 +311,77 @@
         </div>
     </div>
 
-    <script src="js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
+        const supabaseUrl = 'https://your-supabase-url.supabase.co'; // Replace with your Supabase URL
+        const supabaseKey = 'your-anon-key'; // Replace with your Supabase anon key
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
         document.addEventListener('DOMContentLoaded', () => {
-            const addItemBtn = document.getElementById('addItemBtn');
+            const clientSelect = document.getElementById('clientSelect');
+            const clientNameInput = document.getElementById('clientName');
+            const addClientBtn = document.getElementById('addClientBtn');
             const itemsTable = document.getElementById('itemsTable');
             const previewInvoiceBtn = document.getElementById('previewInvoiceBtn');
             const invoiceForm = document.getElementById('invoiceForm');
             const createInvoiceBtn = document.getElementById('createInvoiceBtn');
 
+            // Function to fetch clients from Supabase
+            async function fetchClients() {
+                const { data, error } = await supabase
+                    .from('clients')
+                    .select('id, name');
+
+                if (error) {
+                    console.error('Error fetching clients:', error);
+                    return [];
+                }
+
+                return data;
+            }
+
+            // Populate the client dropdown
+            async function populateClientOptions() {
+                const clients = await fetchClients();
+                clientSelect.innerHTML = '<option value="" disabled selected>Select a client</option>'; // Clear existing options
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.id; // Assuming each client has a unique ID
+                    option.textContent = client.name; // Assuming each client has a name property
+                    clientSelect.appendChild(option);
+                });
+            }
+
+            // Call the function to populate clients on page load
+            populateClientOptions();
+
+            // Add client button functionality
+            addClientBtn.addEventListener('click', async () => {
+                const newClientName = clientNameInput.value.trim();
+                if (newClientName) {
+                    // Save new client to Supabase
+                    const { data, error } = await supabase
+                        .from('clients')
+                        .insert([{ name: newClientName }]);
+
+                    if (error) {
+                        console.error('Error adding new client:', error);
+                    } else {
+                        console.log('New client added:', data);
+                        // Refresh the client options
+                        populateClientOptions();
+                        // Clear the input field
+                        clientNameInput.value = '';
+                    }
+                } else {
+                    alert('Please enter a client name.');
+                }
+            });
+
+            // Save client name directly to local storage if input is used
+            clientNameInput.addEventListener('input', () => {
+                localStorage.setItem('clientName', clientNameInput.value);
+            });
 
             function calculateTotals() {
                 const itemRows = itemsTable.querySelectorAll('.item-row');
@@ -417,6 +477,7 @@
                 calculateTotals();
             }
 
+            const addItemBtn = document.getElementById('addItemBtn');
             addItemBtn.addEventListener('click', addItemRow);
 
             itemsTable.addEventListener('input', (event) => {
@@ -504,9 +565,48 @@
                 sendDataToTemplate(true); // Abrir em uma nova janela
             });
 
-            createInvoiceBtn.addEventListener('click', (event) => {
+            createInvoiceBtn.addEventListener('click', async (event) => {
                 event.preventDefault(); // Impedir o envio do formulário
-                sendDataToTemplate(false); // Redirecionar na mesma janela
+
+                // Collect form data
+                const invoiceData = {
+                    clientName: clientNameInput.value,
+                    clientEmail: document.getElementById('clientEmail').value,
+                    clientAddress: document.getElementById('clientAddress').value,
+                    clientTaxId: document.getElementById('clientTaxId').value,
+                    invoiceNumber: document.getElementById('invoiceNumber').value,
+                    issueDate: document.getElementById('issueDate').value,
+                    dueDate: document.getElementById('dueDate').value,
+                    currency: document.getElementById('currency').value,
+                    paymentTerms: document.getElementById('paymentTerms').value,
+                    items: [] // To be filled with item data
+                };
+
+                // Collect item data
+                const itemRows = itemsTable.querySelectorAll('.item-row');
+                itemRows.forEach(row => {
+                    const item = {
+                        description: row.querySelector('.item-description').value,
+                        quantity: parseFloat(row.querySelector('.item-quantity').value),
+                        price: parseFloat(row.querySelector('.item-price').value),
+                        vatRate: row.querySelector('.item-vat-rate').value,
+                        vat: parseFloat(row.querySelector('.item-vat').textContent),
+                        total: parseFloat(row.querySelector('.item-total').textContent)
+                    };
+                    invoiceData.items.push(item);
+                });
+
+                // Save invoice to Supabase
+                const { data, error } = await supabase
+                    .from('invoices')
+                    .insert([invoiceData]);
+
+                if (error) {
+                    console.error('Error creating invoice:', error);
+                } else {
+                    console.log('Invoice created successfully:', data);
+                    // Optionally redirect or show a success message
+                }
             });
         });
     </script>
