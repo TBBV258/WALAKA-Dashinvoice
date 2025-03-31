@@ -21,9 +21,35 @@
         function toggleLanguage(lang) {
             const elements = document.querySelectorAll('[data-lang]');
             elements.forEach(el => {
-                el.textContent = el.dataset[lang];
+                if (el.tagName === 'INPUT' && el.type === 'text') {
+                    el.placeholder = el.dataset[lang];
+                } else if (el.tagName === 'OPTION') {
+                    el.textContent = el.dataset[lang];
+                } else {
+                    el.textContent = el.dataset[lang];
+                }
             });
+            localStorage.setItem('selectedLanguage', lang); // Store the language
+
+            // Update chart labels
+            updateChartLabels(lang);
         }
+
+        // Define o estado ativo para os botões de idioma
+        function setActiveLanguage(lang) {
+            document.querySelectorAll('.language-toggle button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        // Função para definir o idioma inicial
+        function setInitialLanguage() {
+            const storedLanguage = localStorage.getItem('selectedLanguage') || 'en'; // Padrão para inglês
+            toggleLanguage(storedLanguage);
+            setActiveLanguage(storedLanguage);
+        }
+
+        // Chama setInitialLanguage quando a página é carregada
+        window.onload = setInitialLanguage;
     </script>
 </head>
 <body>
@@ -44,15 +70,15 @@
                 <div class="nav-section">
                     <h3>Invoices & Sales</h3>
                 </div>
-                <a href="#" class="nav-item">
+                <a href="invoices.html" class="nav-item">
                     <i class="fas fa-file-invoice-dollar"></i>
                     <span>Invoices</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="products.html" class="nav-item">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Products</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="clients.html" class="nav-item">
                     <i class="fas fa-users"></i>
                     <span>Clients</span>
                 </a>
@@ -100,7 +126,7 @@
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="profile.html" class="nav-item">
                     <i class="fas fa-user-cog"></i>
                     <span>Account</span>
                 </a>
@@ -120,7 +146,7 @@
                 </button>
                 
                 <div class="search-bar">
-                    <input type="text" placeholder="Search...">
+                    <input type="text" placeholder="Search..." data-lang="searchPlaceholder" data-en="Search..." data-pt="Pesquisar...">
                 </div>
                 
                 <div class="user-menu">
@@ -166,11 +192,11 @@
                 <div class="metric-card" id="totalInvoicesCard">
                     <div class="metric-header">
                         <i class="fas fa-file-invoice"></i>
-                        <span>Total Invoices</span>
+                        <span data-lang="totalInvoices" data-en="Total Invoices" data-pt="Total de Faturas">Total Invoices</span>
                     </div>
                     <div class="metric-value">358</div>
                     <div class="metric-footer">
-                        <span class="metric-label">This Month</span>
+                        <span class="metric-label" data-lang="thisMonth" data-en="This Month" data-pt="Este Mês">This Month</span>
                         <span class="metric-change positive">+12.5%</span>
                     </div>
                     <button class="drilldown-btn" data-target="totalInvoicesDetail">
@@ -178,33 +204,33 @@
                     </button>
                     <div class="drilldown-content" id="totalInvoicesDetail">
                         <div class="drilldown-header">
-                            <h4>Invoice Breakdown</h4>
+                            <h4 data-lang="invoiceBreakdown" data-en="Invoice Breakdown" data-pt="Detalhes da Fatura">Invoice Breakdown</h4>
                             <div class="drilldown-actions">
-                                <button class="drilldown-tab active" data-view="daily">Daily</button>
-                                <button class="drilldown-tab" data-view="weekly">Weekly</button>
-                                <button class="drilldown-tab" data-view="monthly">Monthly</button>
+                                <button class="drilldown-tab active" data-view="daily" data-lang="daily" data-en="Daily" data-pt="Diário">Daily</button>
+                                <button class="drilldown-tab" data-view="weekly" data-lang="weekly" data-en="Weekly" data-pt="Semanal">Weekly</button>
+                                <button class="drilldown-tab" data-view="monthly" data-lang="monthly" data-en="Monthly" data-pt="Mensal">Monthly</button>
                             </div>
                         </div>
                         <div class="drilldown-data">
                             <div class="drilldown-item">
-                                <span>New Invoices</span>
+                                <span data-lang="newInvoices" data-en="New Invoices" data-pt="Novas Faturas">New Invoices</span>
                                 <span>42</span>
                             </div>
                             <div class="drilldown-item">
-                                <span>Sent Invoices</span>
+                                <span data-lang="sentInvoices" data-en="Sent Invoices" data-pt="Faturas Enviadas">Sent Invoices</span>
                                 <span>128</span>
                             </div>
                             <div class="drilldown-item">
-                                <span>Paid Invoices</span>
+                                <span data-lang="paidInvoices" data-en="Paid Invoices" data-pt="Faturas Pagas">Paid Invoices</span>
                                 <span>156</span>
                             </div>
                             <div class="drilldown-item">
-                                <span>Overdue Invoices</span>
+                                <span data-lang="overdueInvoices" data-en="Overdue Invoices" data-pt="Faturas Atrasadas">Overdue Invoices</span>
                                 <span>32</span>
                             </div>
                         </div>
                         <div class="drilldown-footer">
-                            <a href="#" class="drilldown-link">View All Invoices <i class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="drilldown-link" data-lang="viewAllInvoices" data-en="View All Invoices <i class='fas fa-arrow-right'></i>" data-pt="Ver Todas as Faturas <i class='fas fa-arrow-right'></i>">View All Invoices <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -378,40 +404,40 @@
             <div class="recent-transactions">
                 <h3>
                     Recent Invoices
-                    <a href="#" class="view-all">View All</a>
+                    <a href="#" class="view-all" data-lang="viewAllInvoices" data-en="View All" data-pt="Ver Todos">View All</a>
                 </h3>
                 <div class="table-filters">
                     <div class="filter-group">
-                        <label for="statusFilter">Status:</label>
-                        <select id="statusFilter" class="filter-select">
-                            <option value="all">All Statuses</option>
-                            <option value="paid">Paid</option>
-                            <option value="pending">Pending</option>
-                            <option value="overdue">Overdue</option>
+                        <label for="statusFilter" data-lang="statusLabel" data-en="Status:" data-pt="Estado:">Status:</label>
+                        <select id="statusFilter" class="filter-select" data-lang="statusFilter" data-en="statusFilter" data-pt="statusFilter">
+                            <option value="all" data-lang="allStatuses" data-en="All Statuses" data-pt="Todos os Status">All Statuses</option>
+                            <option value="paid" data-lang="paid" data-en="Paid" data-pt="Pago">Paid</option>
+                            <option value="pending" data-lang="pending" data-en="Pending" data-pt="Pendente">Pending</option>
+                            <option value="overdue" data-lang="overdue" data-en="Overdue" data-pt="Atrasado">Overdue</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="dateFilter">Date Range:</label>
+                        <label for="dateFilter" data-lang="dateRangeLabel" data-en="Date Range:" data-pt="Período:">Date Range:</label>
                         <select id="dateFilter" class="filter-select">
-                            <option value="all">All Time</option>
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month" selected>This Month</option>
-                            <option value="quarter">This Quarter</option>
+                            <option value="all" data-lang="allTime" data-en="All Time" data-pt="Todo o Tempo">All Time</option>
+                            <option value="today" data-lang="today" data-en="Today" data-pt="Hoje">Today</option>
+                            <option value="week" data-lang="thisWeek" data-en="This Week" data-pt="Esta Semana">This Week</option>
+                            <option value="month" selected data-lang="thisMonth" data-en="This Month" data-pt="Este Mês">This Month</option>
+                            <option value="quarter" data-lang="thisQuarter" data-en="This Quarter" data-pt="Este Trimestre">This Quarter</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="amountFilter">Amount:</label>
+                        <label for="amountFilter" data-lang="amountLabel" data-en="Amount:" data-pt="Valor:">Amount:</label>
                         <select id="amountFilter" class="filter-select">
-                            <option value="all">All Amounts</option>
-                            <option value="under1000">Under $1,000</option>
-                            <option value="1000to5000">$1,000 - $5,000</option>
-                            <option value="over5000">Over $5,000</option>
+                            <option value="all" data-lang="allAmounts" data-en="All Amounts" data-pt="Todos os Valores">All Amounts</option>
+                            <option value="under1000" data-lang="under1000" data-en="Under $1,000" data-pt="Menos de $1.000">Under $1,000</option>
+                            <option value="1000to5000" data-lang="1000to5000" data-en="$1,000 - $5,000" data-pt="$1.000 - $5.000">$1,000 - $5,000</option>
+                            <option value="over5000" data-lang="over5000" data-en="Over $5,000" data-pt="Mais de $5.000">Over $5,000</option>
                         </select>
                     </div>
                     <div class="filter-group search-filter">
-                        <input type="text" id="searchInvoices" placeholder="Search invoices...">
-                        <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+                        <input type="text" id="searchInvoices" placeholder="Search invoices..." data-lang="searchInvoicesPlaceholder" data-en="Search invoices..." data-pt="Pesquisar faturas...">
+                        <button id="clearFilters" class="clear-filters-btn" data-lang="clearFilters" data-en="Clear Filters" data-pt="Limpar Filtros">Clear Filters</button>
                     </div>
                 </div>
                 <table id="invoicesTable">
@@ -484,32 +510,32 @@
                     </tbody>
                 </table>
                 <div id="noResultsMessage" class="no-results" style="display: none;">
-                    <p>No invoices match your filter criteria. <a href="#" id="resetFiltersLink">Reset filters</a></p>
+                    <p data-lang="noInvoicesFound" data-en="No invoices match your filter criteria. <a href='#' id='resetFiltersLink'>Reset filters</a>" data-pt="Nenhuma fatura corresponde aos seus critérios de filtro. <a href='#' id='resetFiltersLink'>Redefinir filtros</a>">No invoices match your filter criteria. <a href="#" id="resetFiltersLink">Reset filters</a></p>
                 </div>
             </div>
             
             <!-- Quick Actions Section -->
-            <h3>Quick Actions</h3>
+            <h3 data-lang="quickActions" data-en="Quick Actions" data-pt="Ações Rápidas">Quick Actions</h3>
             <div class="quick-actions-grid">
                 <div class="action-card">
                     <i class="fas fa-file-invoice"></i>
-                    <h4>New Invoice</h4>
-                    <p>Create a new invoice</p>
+                    <h4 data-lang="newInvoice" data-en="New Invoice" data-pt="Nova Fatura">New Invoice</h4>
+                    <p data-lang="createANewInvoice" data-en="Create a new invoice" data-pt="Criar uma nova fatura">Create a new invoice</p>
                 </div>
                 <div class="action-card">
                     <i class="fas fa-user-plus"></i>
-                    <h4>Add Client</h4>
-                    <p>Register a new client</p>
+                    <h4 data-lang="addClient" data-en="Add Client" data-pt="Adicionar Cliente">Add Client</h4>
+                    <p data-lang="registerANewClient" data-en="Register a new client" data-pt="Registar um novo cliente">Register a new client</p>
                 </div>
                 <div class="action-card">
                     <i class="fas fa-box"></i>
-                    <h4>Add Product</h4>
-                    <p>Add product to inventory</p>
+                    <h4 data-lang="addProduct" data-en="Add Product" data-pt="Adicionar Produto">Add Product</h4>
+                    <p data-lang="addProductToInventory" data-en="Add product to inventory" data-pt="Adicionar produto ao inventário">Add product to inventory</p>
                 </div>
                 <div class="action-card">
                     <i class="fas fa-file-export"></i>
-                    <h4>Export Report</h4>
-                    <p>Download financial reports</p>
+                    <h4 data-lang="exportReport" data-en="Export Report" data-pt="Exportar Relatório">Export Report</h4>
+                    <p data-lang="downloadFinancialReports" data-en="Download financial reports" data-pt="Baixar relatórios financeiros">Download financial reports</p>
                 </div>
             </div>
         </div>
@@ -522,64 +548,78 @@
     <script>
         // Revenue Chart
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [32500, 28000, 42580, 38900, 45200, 38700, 42300, 44800, 48600, 52300, 45800, 58200],
-                    backgroundColor: '#007ec7',
-                    borderRadius: 4
-                }]
+        const revenueData = { // Store chart data
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Revenue',
+                data: [32500, 28000, 42580, 38900, 45200, 38700, 42300, 44800, 48600, 52300, 45800, 58200],
+                backgroundColor: '#007ec7',
+                borderRadius: 4
+            }]
+        };
+        const revenueOptions = { // Store chart options
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
+                x: {
+                    grid: {
+                        display: false
                     }
                 }
             }
+        };
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: revenueData,
+            options: revenueOptions
         });
         
         // Invoice Status Chart
         const invoiceStatusCtx = document.getElementById('invoiceStatusChart').getContext('2d');
+        const invoiceStatusData = { // Store chart data
+            labels: ['Paid', 'Pending', 'Overdue'],
+            datasets: [{
+                data: [65, 25, 10],
+                backgroundColor: ['#3bb077', '#f7b924', '#e55353'],
+                borderWidth: 0
+            }]
+        };
+        const invoiceStatusOptions = { // Store chart options
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            },
+            cutout: '70%'
+        };
         const invoiceStatusChart = new Chart(invoiceStatusCtx, {
             type: 'doughnut',
-            data: {
-                labels: ['Paid', 'Pending', 'Overdue'],
-                datasets: [{
-                    data: [65, 25, 10],
-                    backgroundColor: ['#3bb077', '#f7b924', '#e55353'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                },
-                cutout: '70%'
-            }
+            data: invoiceStatusData,
+            options: invoiceStatusOptions
         });
+
+        function updateChartLabels(lang) {
+            // Translate Revenue Chart
+            revenueChart.data.datasets[0].label = lang === 'pt' ? 'Receita' : 'Revenue';
+            revenueChart.update();
+
+            // Translate Invoice Status Chart
+            invoiceStatusChart.data.labels = lang === 'pt' ? ['Pago', 'Pendente', 'Atrasado'] : ['Paid', 'Pending', 'Overdue'];
+            invoiceStatusChart.update();
+        }
     </script>
 </body>
 </html>
