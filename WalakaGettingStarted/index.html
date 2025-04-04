@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WALAKA - Getting Started</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="pt">PT</button>
+    </div>
+
+    <!-- Onboarding Container -->
+    <div class="onboarding-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>WALAKA</h1>
+            </div>
+
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-indicator">
+                        <span class="step-number">1</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-text">
+                        <span data-lang="en">Welcome</span>
+                        <span data-lang="pt">Bem-vindo</span>
+                    </div>
+                </div>
+
+                <div class="progress-step" data-step="2">
+                    <div class="step-indicator">
+                        <span class="step-number">2</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-text">
+                        <span data-lang="en">Company Profile</span>
+                        <span data-lang="pt">Perfil da Empresa</span>
+                    </div>
+                </div>
+
+                <div class="progress-step" data-step="3">
+                    <div class="step-indicator">
+                        <span class="step-number">3</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-text">
+                        <span data-lang="en">Document Setup</span>
+                        <span data-lang="pt">Configuração de Documentos</span>
+                    </div>
+                </div>
+
+                <div class="progress-step" data-step="4">
+                    <div class="step-indicator">
+                        <span class="step-number">4</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-text">
+                        <span data-lang="en">Subscription</span>
+                        <span data-lang="pt">Subscrição</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-help">
+                <div class="help-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="help-text">
+                    <h4 data-lang="en">Need Help?</h4>
+                    <h4 data-lang="pt">Precisa de Ajuda?</h4>
+                    <p data-lang="en">Our support team is here to assist you with your setup.</p>
+                    <p data-lang="pt">Nossa equipe de suporte está aqui para ajudá-lo com sua configuração.</p>
+                    <a href="#" class="help-link" data-lang="en">Contact Support</a>
+                    <a href="#" class="help-link" data-lang="pt">Contatar Suporte</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="onboarding-wizard">
+                <!-- Step 1: Welcome -->
+                <div class="onboarding-step" id="step-1">
+                    <div class="step-header">
+                        <h3 data-lang="en">Welcome to WALAKA</h3>
+                        <h3 data-lang="pt">Bem-vindo ao WALAKA</h3>
+                        <p data-lang="en">Let's get you set up with WALAKA in just a few steps.</p>
+                        <p data-lang="pt">Vamos configurar o WALAKA em apenas alguns passos.</p>
+                    </div>
+
+                    <div class="onboarding-form">
+                        <div class="welcome-message">
+                            <div class="welcome-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h4 data-lang="en">Ready to transform your business?</h4>
+                            <h4 data-lang="pt">Pronto para transformar seu negócio?</h4>
+                            <p data-lang="en">WALAKA is a complete business management platform designed to help you streamline operations, manage finances, and grow your business.</p>
+                            <p data-lang="pt">WALAKA é uma plataforma completa de gestão empresarial projetada para ajudá-lo a otimizar operações, gerenciar finanças e expandir seus negócios.</p>
+                        </div>
+
+                        <div class="quick-features">
+                            <h4 data-lang="en">Key Features:</h4>
+                            <h4 data-lang="pt">Recursos Principais:</h4>
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                                    <div class="feature-text">
+                                        <h5 data-lang="en">Smart Invoicing</h5>
+                                        <h5 data-lang="pt">Faturamento Inteligente</h5>
+                                        <p data-lang="en">Create professional invoices and get paid faster</p>
+                                        <p data-lang="pt">Crie faturas profissionais e receba pagamentos mais rápido</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                                    <div class="feature-text">
+                                        <h5 data-lang="en">Financial Reports</h5>
+                                        <h5 data-lang="pt">Relatórios Financeiros</h5>
+                                        <p data-lang="en">Gain insights with detailed financial reporting</p>
+                                        <p data-lang="pt">Obtenha insights com relatórios financeiros detalhados</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                                    <div class="feature-text">
+                                        <h5 data-lang="en">Client Management</h5>
+                                        <h5 data-lang="pt">Gestão de Clientes</h5>
+                                        <p data-lang="en">Organize and manage your client relationships</p>
+                                        <p data-lang="pt">Organize e gerencie seus relacionamentos com clientes</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><i class="fas fa-tasks"></i></div>
+                                    <div class="feature-text">
+                                        <h5 data-lang="en">Project Tracking</h5>
+                                        <h5 data-lang="pt">Acompanhamento de Projetos</h5>
+                                        <p data-lang="en">Keep projects on track and within budget</p>
+                                        <p data-lang="pt">Mantenha projetos no caminho certo e dentro do orçamento</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-actions">
+                            <button class="btn btn-primary" id="step1-next">
+                                <span data-lang="en">Let's Get Started</span>
+                                <span data-lang="pt">Vamos Começar</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Company Profile -->
+                <div class="onboarding-step hidden" id="step-2">
+                    <div class="step-header">
+                        <h3 data-lang="en">Company Profile</h3>
+                        <h3 data-lang="pt">Perfil da Empresa</h3>
+                        <p data-lang="en">Tell us about your business so we can personalize your experience.</p>
+                        <p data-lang="pt">Conte-nos sobre sua empresa para personalizarmos sua experiência.</p>
+                    </div>
+
+                    <div class="onboarding-form">
+                        <form id="company-form">
+                            <div class="form-section">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="company-name" data-lang="en">Company Name</label>
+                                        <label for="company-name" data-lang="pt">Nome da Empresa</label>
+                                        <input type="text" id="company-name" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="industry" data-lang="en">Industry</label>
+                                        <label for="industry" data-lang="pt">Indústria</label>
+                                        <select id="industry" required>
+                                            <option value="" data-lang="en">Select Industry</option>
+                                            <option value="" data-lang="pt">Selecionar Indústria</option>
+                                            <option value="retail" data-lang="en">Retail</option>
+                                            <option value="retail" data-lang="pt">Varejo</option>
+                                            <option value="services" data-lang="en">Professional Services</option>
+                                            <option value="services" data-lang="pt">Serviços Profissionais</option>
+                                            <option value="manufacturing" data-lang="en">Manufacturing</option>
+                                            <option value="manufacturing" data-lang="pt">Manufatura</option>
+                                            <option value="technology" data-lang="en">Technology</option>
+                                            <option value="technology" data-lang="pt">Tecnologia</option>
+                                            <option value="other" data-lang="en">Other</option>
+                                            <option value="other" data-lang="pt">Outro</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="company-size" data-lang="en">Company Size</label>
+                                        <label for="company-size" data-lang="pt">Tamanho da Empresa</label>
+                                        <select id="company-size" required>
+                                            <option value="" data-lang="en">Select Company Size</option>
+                                            <option value="" data-lang="pt">Selecionar Tamanho da Empresa</option>
+                                            <option value="1-10" data-lang="en">1-10 employees</option>
+                                            <option value="1-10" data-lang="pt">1-10 funcionários</option>
+                                            <option value="11-50" data-lang="en">11-50 employees</option>
+                                            <option value="11-50" data-lang="pt">11-50 funcionários</option>
+                                            <option value="51-200" data-lang="en">51-200 employees</option>
+                                            <option value="51-200" data-lang="pt">51-200 funcionários</option>
+                                            <option value="201+" data-lang="en">201+ employees</option>
+                                            <option value="201+" data-lang="pt">201+ funcionários</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group logo-upload-section">
+                                    <label data-lang="en">Upload Company Logo</label>
+                                    <label data-lang="pt">Carregar Logo da Empresa</label>
+                                    <div class="logo-upload">
+                                        <input type="file" id="logo-upload" accept="image/*">
+                                        <div class="upload-placeholder">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span data-lang="en">Click or drag to upload logo</span>
+                                            <span data-lang="pt">Clique ou arraste para carregar logo</span>
+                                            <span class="upload-format" data-lang="en">Supports: JPG, PNG, SVG (max 5MB)</span>
+                                            <span class="upload-format" data-lang="pt">Suporta: JPG, PNG, SVG (máx 5MB)</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span data-lang="en">Your logo will appear on invoices and other documents.</span>
+                                        <span data-lang="pt">Seu logo aparecerá em faturas e outros documentos.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-outline" id="step2-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span data-lang="en">Back</span>
+                                    <span data-lang="pt">Voltar</span>
+                                </button>
+                                <button type="button" class="btn btn-primary" id="step2-next">
+                                    <span data-lang="en">Next Step</span>
+                                    <span data-lang="pt">Próximo Passo</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Step 3: Document Setup -->
+                <div class="onboarding-step hidden" id="step-3">
+                    <div class="step-header">
+                        <h3 data-lang="en">Document Setup</h3>
+                        <h3 data-lang="pt">Configuração de Documentos</h3>
+                        <p data-lang="en">Customize how your invoices and other documents look.</p>
+                        <p data-lang="pt">Personalize a aparência de suas faturas e outros documentos.</p>
+                    </div>
+
+                    <div class="onboarding-form">
+                        <form id="document-form">
+                            <div class="form-section">
+                                <h4 data-lang="en">Invoice Template</h4>
+                                <h4 data-lang="pt">Modelo de Fatura</h4>
+                                <p data-lang="en">Select a template that reflects your brand's identity.</p>
+                                <p data-lang="pt">Selecione um modelo que reflita a identidade da sua marca.</p>
+
+                                <div class="template-selection">
+                                    <div class="template-option selected" data-template="standard">
+                                        <div class="template-preview">
+                                            <img src="https://via.placeholder.com/180x120/f0f0f0/808080?text=Standard" alt="Standard Template">
+                                        </div>
+                                        <div class="template-name">
+                                            <span data-lang="en">Standard</span>
+                                            <span data-lang="pt">Padrão</span>
+                                        </div>
+                                    </div>
+                                    <div class="template-option" data-template="professional">
+                                        <div class="template-preview">
+                                            <img src="https://via.placeholder.com/180x120/f0f0f0/808080?text=Professional" alt="Professional Template">
+                                        </div>
+                                        <div class="template-name">
+                                            <span data-lang="en">Professional</span>
+                                            <span data-lang="pt">Profissional</span>
+                                        </div>
+                                    </div>
+                                    <div class="template-option" data-template="modern">
+                                        <div class="template-preview">
+                                            <img src="https://via.placeholder.com/180x120/f0f0f0/808080?text=Modern" alt="Modern Template">
+                                        </div>
+                                        <div class="template-name">
+                                            <span data-lang="en">Modern</span>
+                                            <span data-lang="pt">Moderno</span>
+                                        </div>
+                                    </div>
+                                    <div class="template-option" data-template="classic">
+                                        <div class="template-preview">
+                                            <img src="https://via.placeholder.com/180x120/f0f0f0/808080?text=Classic" alt="Classic Template">
+                                        </div>
+                                        <div class="template-name">
+                                            <span data-lang="en">Classic</span>
+                                            <span data-lang="pt">Clássico</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4 data-lang="en">Color Theme</h4>
+                                <h4 data-lang="pt">Tema de Cores</h4>
+                                <p data-lang="en">Choose a primary color for your documents and portal.</p>
+                                <p data-lang="pt">Escolha uma cor primária para seus documentos e portal.</p>
+
+                                <div class="color-options">
+                                    <div class="color-option selected" data-color="#3498db" style="background-color: #3498db;"></div>
+                                    <div class="color-option" data-color="#2ecc71" style="background-color: #2ecc71;"></div>
+                                    <div class="color-option" data-color="#e74c3c" style="background-color: #e74c3c;"></div>
+                                    <div class="color-option" data-color="#9b59b6" style="background-color: #9b59b6;"></div>
+                                    <div class="color-option" data-color="#f1c40f" style="background-color: #f1c40f;"></div>
+                                    <div class="color-option" data-color="#1abc9c" style="background-color: #1abc9c;"></div>
+                                    <div class="color-option" data-color="#34495e" style="background-color: #34495e;"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4 data-lang="en">Invoice Numbering</h4>
+                                <h4 data-lang="pt">Numeração de Faturas</h4>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="invoice-format" data-lang="en">Invoice Number Format</label>
+                                        <label for="invoice-format" data-lang="pt">Formato de Número da Fatura</label>
+                                        <select id="invoice-format">
+                                            <option value="INV-{NUMBER}" data-lang="en">INV-00001</option>
+                                            <option value="INV-{NUMBER}" data-lang="pt">INV-00001</option>
+                                            <option value="{YEAR}-{NUMBER}" data-lang="en">2025-00001</option>
+                                            <option value="{YEAR}-{NUMBER}" data-lang="pt">2025-00001</option>
+                                            <option value="{PREFIX}-{NUMBER}" data-lang="en">Custom-00001</option>
+                                            <option value="{PREFIX}-{NUMBER}" data-lang="pt">Personalizado-00001</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row custom-prefix" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="custom-prefix" data-lang="en">Custom Prefix</label>
+                                        <label for="custom-prefix" data-lang="pt">Prefixo Personalizado</label>
+                                        <input type="text" id="custom-prefix" placeholder="e.g. WALAKA">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="starting-number" data-lang="en">Starting Number</label>
+                                        <label for="starting-number" data-lang="pt">Número Inicial</label>
+                                        <input type="number" id="starting-number" value="1" min="1">
+                                        <div class="form-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            <span data-lang="en">This is the starting number for your invoices.</span>
+                                            <span data-lang="pt">Este é o número inicial para suas faturas.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-outline" id="step3-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span data-lang="en">Back</span>
+                                    <span data-lang="pt">Voltar</span>
+                                </button>
+                                <button type="button" class="btn btn-primary" id="step3-next">
+                                    <span data-lang="en">Next Step</span>
+                                    <span data-lang="pt">Próximo Passo</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Step 4: Subscription -->
+                <div class="onboarding-step hidden" id="step-4">
+                    <div class="step-header">
+                        <h3 data-lang="en">Choose Your Plan</h3>
+                        <h3 data-lang="pt">Escolha Seu Plano</h3>
+                        <p data-lang="en">Select the subscription plan that best suits your business needs.</p>
+                        <p data-lang="pt">Selecione o plano de assinatura que melhor atende às necessidades do seu negócio.</p>
+                    </div>
+
+                    <div class="onboarding-form">
+                        <div class="subscription-plan">
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 data-lang="en">Smart Invoicing</h4>
+                                    <h4 data-lang="pt">Faturamento Inteligente</h4>
+                                    <div class="plan-price">
+                                        <span class="price">MZN 149</span>
+                                        <span class="period" data-lang="en">/month</span>
+                                        <span class="period" data-lang="pt">/mês</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <ul>
+                                        <li data-lang="en"><i class="fas fa-check-circle"></i> Unlimited Invoices</li>
+                                        <li data-lang="pt"><i class="fas fa-check-circle"></i> Faturas Ilimitadas</li>
+                                        <li data-lang="en"><i class="fas fa-check-circle"></i> Client Portal</li>
+                                        <li data-lang="pt"><i class="fas fa-check-circle"></i> Portal do Cliente</li>
+                                        <li data-lang="en"><i class="fas fa-check-circle"></i> Payment Reminders</li>
+                                        <li data-lang="pt"><i class="fas fa-check-circle"></i> Lembretes de Pagamento</li>
+                                        <li data-lang="en"><i class="fas fa-check-circle"></i> Basic Reports</li>
+                                        <li data-lang="pt"><i class="fas fa-check-circle"></i> Relatórios Básicos</li>
+                                        <li data-lang="en"><i class="fas fa-check-circle"></i> Email Support</li>
+                                        <li data-lang="pt"><i class="fas fa-check-circle"></i> Suporte por Email</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 data-lang="en">Payment Method</h4>
+                            <h4 data-lang="pt">Método de Pagamento</h4>
+
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="bank-deposit" name="payment-method" value="bank-deposit" checked>
+                                    <label for="bank-deposit">
+                                        <span data-lang="en"><i class="fas fa-university"></i> Bank Deposit</span>
+                                        <span data-lang="pt"><i class="fas fa-university"></i> Depósito Bancário</span>
+                                        <div class="option-description" data-lang="en">
+                                            Make a deposit to our bank account and upload the receipt.
+                                        </div>
+                                        <div class="option-description" data-lang="pt">
+                                            Faça um depósito em nossa conta bancária e faça upload do comprovante.
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="radio-option">
+                                    <input type="radio" id="mpesa" name="payment-method" value="mpesa">
+                                    <label for="mpesa">
+                                        <span data-lang="en"><i class="fas fa-mobile-alt"></i> M-Pesa</span>
+                                        <span data-lang="pt"><i class="fas fa-mobile-alt"></i> M-Pesa</span>
+                                        <div class="option-description" data-lang="en">
+                                            Pay directly with your M-Pesa account.
+                                        </div>
+                                        <div class="option-description" data-lang="pt">
+                                            Pague diretamente com sua conta M-Pesa.
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Payment method specific content -->
+                            <div id="bank-deposit-content" class="payment-method-content">
+                                <div class="bank-info">
+                                    <p data-lang="en">Please make a deposit or transfer to the following bank account:</p>
+                                    <p data-lang="pt">Por favor, faça um depósito ou transferência para a seguinte conta bancária:</p>
+                                    
+                                    <div class="bank-details-info">
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Bank:</div>
+                                            <div class="detail-label" data-lang="pt">Banco:</div>
+                                            <div class="detail-value">Millennium BIM</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Account Name:</div>
+                                            <div class="detail-label" data-lang="pt">Nome da Conta:</div>
+                                            <div class="detail-value">WALAKA Solutions, Lda</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Account Number:</div>
+                                            <div class="detail-label" data-lang="pt">Número da Conta:</div>
+                                            <div class="detail-value">12345678901</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Reference:</div>
+                                            <div class="detail-label" data-lang="pt">Referência:</div>
+                                            <div class="detail-value" id="reference-number">54321</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <p data-lang="en" class="mt-4">After making the payment, please upload your receipt:</p>
+                                    <p data-lang="pt" class="mt-4">Após efetuar o pagamento, por favor faça upload do seu comprovante:</p>
+                                    
+                                    <div class="form-group">
+                                        <input type="file" id="payment-receipt" accept="image/*,application/pdf">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="mpesa-content" class="payment-method-content" style="display: none;">
+                                <div class="mobile-money">
+                                    <p data-lang="en">Please make a payment to the following M-Pesa number:</p>
+                                    <p data-lang="pt">Por favor, faça um pagamento para o seguinte número M-Pesa:</p>
+                                    
+                                    <div class="bank-details-info">
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">M-Pesa Number:</div>
+                                            <div class="detail-label" data-lang="pt">Número M-Pesa:</div>
+                                            <div class="detail-value">+258 84 123 4567</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Amount:</div>
+                                            <div class="detail-label" data-lang="pt">Valor:</div>
+                                            <div class="detail-value">MZN 149</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <div class="detail-label" data-lang="en">Reference:</div>
+                                            <div class="detail-label" data-lang="pt">Referência:</div>
+                                            <div class="detail-value" id="mpesa-reference">54321</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <p data-lang="en" class="mt-4">After making the payment, please enter the M-Pesa transaction code:</p>
+                                    <p data-lang="pt" class="mt-4">Após efetuar o pagamento, por favor insira o código de transação M-Pesa:</p>
+                                    
+                                    <div class="form-group">
+                                        <input type="text" id="mpesa-code" placeholder="e.g. MP12345678">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-actions">
+                            <button type="button" class="btn btn-outline" id="step4-prev">
+                                <i class="fas fa-arrow-left"></i>
+                                <span data-lang="en">Back</span>
+                                <span data-lang="pt">Voltar</span>
+                            </button>
+                            <button type="button" class="btn btn-primary" id="complete-setup">
+                                <span data-lang="en">Complete Setup</span>
+                                <span data-lang="pt">Concluir Configuração</span>
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container"></div>
+
+    <script src="js/language-toggle.js"></script>
+    <script src="js/onboarding.js"></script>
+</body>
+</html>
