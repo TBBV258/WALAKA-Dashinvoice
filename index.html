@@ -1,672 +1,972 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WALAKA - Soluções Empresariais</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    /* Esquema de Cores Corporativo Moderno */
-    :root {
-      --primary: #2563eb;
-      --secondary: #1d4ed8;
-      --accent: #10b981;
-      --dark: #111827;
-      --light: #f9fafb;
-      --gray: #6b7280;
-    }
-
-    /* Estilos Base */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      color: var(--dark);
-      background: var(--light);
-    }
-
-    /* Cabeçalho */
-    .landing-header {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 30px rgba(0,0,0,0.05);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--primary);
-      letter-spacing: -1px;
-      text-shadow: 0 2px 4px rgba(37,99,235,0.1);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 3.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--dark);
-      font-weight: 500;
-      transition: all 0.3s ease;
-      position: relative;
-      font-size: 1.05rem;
-    }
-
-    .nav-links a:after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2.5px;
-      bottom: -4px;
-      left: 0;
-      background: var(--primary);
-      transition: width 0.3s ease;
-      border-radius: 2px;
-    }
-
-    .nav-links a:hover:after {
-      width: 100%;
-    }
-
-    .nav-buttons {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .nav-buttons .btn {
-      padding: 0.6rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .btn-trial {
-      background: var(--primary);
-      color: white;
-      border: none;
-      box-shadow: 0 8px 20px rgba(37,99,235,0.25);
-    }
-
-    .btn-trial:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(37,99,235,0.3);
-    }
-
-    .btn-login {
-      background: transparent;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-    }
-
-    .btn-login:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .input-group {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-
-    .search-bar {
-      padding: 0.8rem;
-      border: 1px solid var(--gray);
-      border-radius: 5px;
-      font-size: 1rem;
-      width: 0;
-      opacity: 0;
-      transition: width 0.4s ease, opacity 0.4s ease;
-      position: absolute;
-      right: 40px; /* Adjust position */
-      z-index: 1;
-    }
-
-    .search-icon {
-      font-size: 1.5rem;
-      color: var(--primary);
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .search-icon:hover {
-      color: var(--secondary);
-    }
-
-    .search-icon:focus + .search-bar,
-    .search-bar:focus {
-      width: 200px;
-      opacity: 1;
-      outline: none;
-    }
-
-    .language-toggle {
-      padding: 0.4rem; /* Reduced padding for smaller size */
-      border: 1px solid var(--gray);
-      border-radius: 5px;
-      font-size: 0.6rem; /* 40% smaller */
-      transition: border-color 0.3s ease;
-    }
-
-    .language-toggle:focus {
-      border-color: var(--primary);
-      outline: none;
-    }
-
-    /* Seção Hero */
-    .hero {
-      padding: 12rem 2rem 8rem;
-      background: linear-gradient(135deg, #f9fafb 0%, #e0f2fe 100%);
-      text-align: center;
-    }
-
-    .hero-content {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: 4rem;
-      font-weight: 800;
-      margin-bottom: 1.8rem;
-      color: var(--dark);
-      letter-spacing: -1.5px;
-      line-height: 1.2;
-      background: linear-gradient(to right, var(--dark), var(--primary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: 1.4rem;
-      color: var(--gray);
-      margin-bottom: 3rem;
-      max-width: 750px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
-    }
-
-    /* Grade de Recursos */
-    .modules-container {
-      max-width: 1400px;
-      margin: 7rem auto;
-      padding: 0 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 3rem;
-    }
-
-    .module {
-      background: white;
-      border-radius: 20px;
-      padding: 3rem;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-      transition: all 0.4s ease;
-      border: 1px solid rgba(0,0,0,0.06);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .module::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(37,99,235,0.05) 0%, transparent 100%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .module:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.12);
-    }
-
-    .module:hover::before {
-      opacity: 1;
-    }
-
-    .module-icon {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 2rem;
-    }
-
-    .module h3 {
-      font-size: 2rem;
-      margin-bottom: 1.2rem;
-      color: var(--dark);
-      font-weight: 700;
-    }
-
-    .module-price {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin: 1.8rem 0;
-    }
-
-    .module-price span {
-      font-size: 1.2rem;
-      color: var(--gray);
-      font-weight: 500;
-    }
-
-    .module-features {
-      list-style: none;
-      margin: 2.5rem 0;
-    }
-
-    .module-features li {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      font-size: 1.15rem;
-      color: var(--gray);
-    }
-
-    .module-features i {
-      color: var(--accent);
-      margin-right: 1rem;
-      font-size: 1.3rem;
-    }
-
-    /* Selos de Confiança */
-    .trust-section {
-      text-align: center;
-      padding: 6rem 2rem;
-      background: white;
-      border-top: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .trust-section h3 {
-      font-size: 2rem;
-      color: var(--dark);
-      margin-bottom: 3rem;
-    }
-
-    .trust-logos {
-      display: flex;
-      justify-content: center;
-      gap: 5rem;
-      flex-wrap: wrap;
-      margin-top: 3.5rem;
-    }
-
-    .trust-logos img {
-      height: 50px;
-      opacity: 0.7;
-      transition: all 0.3s ease;
-      filter: grayscale(100%);
-    }
-
-    .trust-logos img:hover {
-      opacity: 1;
-      filter: grayscale(0%);
-      transform: scale(1.05);
-    }
-
-    /* Rodapé */
-    .landing-footer {
-      background: var(--dark);
-      color: white;
-      padding: 1.7rem 2rem;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4rem;
-    }
-
-    .footer-section h4 {
-      margin-bottom: 0.5rem;
-      color: white;
-      font-size: 1.7rem;
-      font-weight: 600;
-    }
-
-    .footer-section p {
-      color: #9ca3af;
-      line-height: 1.8;
-    }
-
-    .footer-links {
-      list-style: none;
-    }
-
-    .footer-links a {
-      color: #9ca3af;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.8rem;
-      transition: all 0.3s ease;
-      font-size: 1.05rem;
-    }
-
-    .footer-links a:hover {
-      color: white;
-      transform: translateX(5px);
-    }
-
-    /* Design Responsivo */
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
-
-      .hero h1 {
-        font-size: 1.7rem;
-      }
-
-      .hero p {
-        font-size: 1.2rem;
-      }
-
-      .modules-container {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-    }
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const languageToggle = document.querySelector('.language-toggle');
-      const elementsToTranslate = {
-        'pt': {
-          'logo': 'WALAKA',
-          'solutions': 'Soluções',
-          'pricing': 'Preços',
-          'resources': 'Recursos',
-          'searchPlaceholder': 'Buscar...',
-          'trialButton': 'Iniciar Teste Gratuito',
-          'loginButton': 'Entrar',
-          'heroTitle': 'Impulsione o Crescimento da Sua Empresa',
-          'heroText': 'Plataforma unificada de gestão empresarial projectada para empresas modernas. Optimize operações, gerencie finanças e melhore relacionamentos com clientes.',
-          'module1Title': 'Facturação Inteligente',
-          'module1Price': 'MZN 149',
-          'module1Features': [
-            'Facturação automática',
-            'Facturas recorrentes',
-            'Suporte multi-moeda',
-            'Rastreamento de pagamentos'
-          ],
-          'module2Title': 'Suite Comercial',
-        //  'module2Price': 'MZN 199',
-          'module2Features': [
-            'Em Desenvolvimento',
-        //    'Rastreamento de pedidos',
-        //    'Gestão de fornecedores',
-        //    'Integração CRM'
-          ],
-          'module3Title': 'Contabilidade Pro',
-         // 'module3Price': 'MZN 249',
-          'module3Features': [
-            'Em Desenvolvimento',
-         //   'Conformidade fiscal',
-         //   'Previsão orçamentária',
-         //   'Suporte multi-empresa'
-          ],
-          'module4Title': 'Suite Financeira',
-         // 'module4Price': 'MZN 299',
-          'module4Features': [
-            'Em Desenvolvimento',
-         //   'Gestão CP/CR',
-         //   'Painéis financeiros',
-         //   'Trilhas de auditoria'
-          ],
-          'footerText': 'Soluções empresariais para os desafios do amanhã.'
-        },
-        'en': {
-          'logo': 'WALAKA',
-          'solutions': 'Solutions',
-          'pricing': 'Pricing',
-          'resources': 'Resources',
-          'searchPlaceholder': 'Search...',
-          'trialButton': 'Start Free Trial',
-          'loginButton': 'Login',
-          'heroTitle': 'Boost Your Company\'s Growth',
-          'heroText': 'Unified business management platform designed for modern companies. Optimize operations, manage finances, and improve customer relationships.',
-          'module1Title': 'Smart Invoicing',
-          'module1Price': 'MZN 149',
-          'module1Features': [
-            'Automatic invoicing',
-            'Recurring invoices',
-            'Multi-currency support',
-            'Payment tracking'
-          ],
-          'module2Title': 'Business Suite',
-        //  'module2Price': 'MZN 199',
-          'module2Features': [
-            'Under Development',
-        //    'Order tracking',
-        //    'Supplier management',
-        //    'CRM integration'
-          ],
-          'module3Title': 'Pro Accounting',
-        //  'module3Price': 'MZN 249',
-          'module3Features': [
-            'Under Development',
-        //    'Tax compliance',
-        //    'Budget forecasting',
-        //    'Multi-company support'
-          ],
-          'module4Title': 'Financial Suite',
-        //  'module4Price': 'MZN 299',
-          'module4Features': [
-            'Under Development',
-        //    'AP/AR management',
-        //    'Financial dashboards',
-        //    'Audit trails'
-          ],
-          'footerText': 'Business solutions for tomorrow\'s challenges.'
-        }
-      };
-
-      function translatePage(language) {
-        document.querySelector('.logo').textContent = elementsToTranslate[language].logo;
-        document.querySelector('.nav-links a[href="#features"]').textContent = elementsToTranslate[language].solutions;
-        document.querySelector('.nav-links a[href="#pricing"]').textContent = elementsToTranslate[language].pricing;
-        document.querySelector('.nav-links a[href="#resources"]').textContent = elementsToTranslate[language].resources;
-        document.querySelector('.search-bar').placeholder = elementsToTranslate[language].searchPlaceholder;
-        document.querySelector('.btn-trial').textContent = elementsToTranslate[language].trialButton;
-        document.querySelector('.btn-login').textContent = elementsToTranslate[language].loginButton;
-        document.querySelector('.hero h1').textContent = elementsToTranslate[language].heroTitle;
-        document.querySelector('.hero p').textContent = elementsToTranslate[language].heroText;
-
-        const modules = document.querySelectorAll('.module');
-        modules[0].querySelector('h3').textContent = elementsToTranslate[language].module1Title;
-        modules[0].querySelector('.module-price').innerHTML = elementsToTranslate[language].module1Price + '<span>/mês</span>';
-        const module1Features = modules[0].querySelector('.module-features');
-        module1Features.innerHTML = '';
-        elementsToTranslate[language].module1Features.forEach(feature => {
-          module1Features.innerHTML += `<li><i class="fas fa-check"></i>${feature}</li>`;
-        });
-
-        modules[1].querySelector('h3').textContent = elementsToTranslate[language].module2Title;
-      //  modules[1].querySelector('.module-price').innerHTML = elementsToTranslate[language].module2Price + '<span>/mês</span>';
-        const module2Features = modules[1].querySelector('.module-features');
-        module2Features.innerHTML = '';
-        elementsToTranslate[language].module2Features.forEach(feature => {
-          module2Features.innerHTML += `<li><i class="fas fa-check"></i>${feature}</li>`;
-        });
-
-        modules[2].querySelector('h3').textContent = elementsToTranslate[language].module3Title;
-      //  modules[2].querySelector('.module-price').innerHTML = elementsToTranslate[language].module3Price + '<span>/mês</span>';
-        const module3Features = modules[2].querySelector('.module-features');
-        module3Features.innerHTML = '';
-        elementsToTranslate[language].module3Features.forEach(feature => {
-          module3Features.innerHTML += `<li><i class="fas fa-check"></i>${feature}</li>`;
-        });
-
-        modules[3].querySelector('h3').textContent = elementsToTranslate[language].module4Title;
-      //  modules[3].querySelector('.module-price').innerHTML = elementsToTranslate[language].module4Price + '<span>/mês</span>';
-        const module4Features = modules[3].querySelector('.module-features');
-        module4Features.innerHTML = '';
-        elementsToTranslate[language].module4Features.forEach(feature => {
-          module4Features.innerHTML += `<li><i class="fas fa-check"></i>${feature}</li>`;
-        });
-
-        document.querySelector('.footer-section p').textContent = elementsToTranslate[language].footerText;
-      }
-
-      languageToggle.addEventListener('change', function() {
-        const selectedLanguage = this.value;
-        translatePage(selectedLanguage);
-      });
-    });
-  </script>
+  <title>WALAKA — ERP and Invoicing for Small Businesses</title>
+  <meta name="description" content="Manage your business finances, taxes, and customers all in one easy web app.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="landing-header">
-    <nav class="navbar">
-      <div class="logo">WALAKA</div>
-      <ul class="nav-links">
-        <li><a href="#features">Soluções</a></li>
-        <li><a href="#pricing">Preços</a></li>
-        <li><a href="#resources">Recursos</a></li>
-      </ul>
-      <div class="nav-buttons">
-        <div class="input-group">
-          <i class="fas fa-search search-icon" tabindex="0"></i>
-          <input type="text" placeholder="Buscar..." class="search-bar" aria-label="Search">
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="index.html">WALAKA</a>
         </div>
-        <a href="trial/trial_dashboard.html"><button class="btn btn-trial">Iniciar Teste Gratuito</button></a>
-        <a href="login.html"><button class="btn btn-login">Entrar</button></a>
-        <select class="language-toggle" aria-label="Select Language">
-          <option value="pt">PT</option>
-          <option value="en">EN</option>
-        </select>
+
+        <nav class="desktop-nav">
+          <ul>
+            <li><a href="#solutions" class="nav-link" data-en="Solutions" data-pt="Soluções">Solutions</a></li>
+            <li><a href="#features" class="nav-link" data-en="Features" data-pt="Funcionalidades">Features</a></li>
+            <li><a href="#pricing" class="nav-link" data-en="Pricing" data-pt="Preços">Pricing</a></li>
+            <li><a href="#contact" class="nav-link" data-en="Contact" data-pt="Contacto">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-right">
+          <div class="theme-toggle">
+            <button id="theme-btn">
+              <i class="fas fa-moon"></i>
+            </button>
+          </div>
+          
+          <div class="language-switcher">
+            <button id="language-btn">
+              <i class="fas fa-globe"></i>
+              <span id="current-lang">EN</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="language-dropdown" id="language-dropdown">
+              <a href="#" data-lang="en" class="active">English</a>
+              <a href="#" data-lang="pt">Português</a>
+            </div>
+          </div>
+
+          <div class="auth-buttons">
+            <a href="login.html" class="login-btn" data-en="Login" data-pt="Entrar">Login</a>
+            <a href="trial/trial_dashboard.html" class="get-started-btn" data-en="Get Started" data-pt="Começar">Get Started</a>
+          </div>
+
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
-    </nav>
+
+      <div class="mobile-nav" id="mobile-nav">
+        <ul>
+          <li><a href="#solutions" class="nav-link" data-en="Solutions" data-pt="Soluções">Solutions</a></li>
+          <li><a href="#features" class="nav-link" data-en="Features" data-pt="Funcionalidades">Features</a></li>
+          <li><a href="#pricing" class="nav-link" data-en="Pricing" data-pt="Preços">Pricing</a></li>
+          <li><a href="#contact" class="nav-link" data-en="Contact" data-pt="Contacto">Contact</a></li>
+        </ul>
+        <div class="mobile-buttons">
+          <a href="#" class="login-btn" data-en="Login" data-pt="Entrar">Login</a>
+          <a href="#" class="get-started-btn" data-en="Get Started" data-pt="Começar">Get Started</a>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Impulsione o Crescimento da Sua Empresa</h1>
-      <p>Plataforma unificada de gestão empresarial projectada para empresas modernas. Optimize operações, gerencie finanças e melhore relacionamentos com clientes.</p>
-      <div class="cta-buttons">
-        <button class="btn btn-trial">Iniciar Teste Gratuito</button>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title" data-en="Smart Invoicing & ERP for Freelancers and Small Businesses" data-pt="Faturação Inteligente e ERP para Freelancers e Pequenas Empresas">
+            Smart Invoicing & ERP for Freelancers and Small Businesses
+          </h1>
+          <p class="hero-subtitle" data-en="Create professional invoices, manage taxes, and get paid faster — all in one place. The unified business management platform designed for modern companies in Mozambique." data-pt="Crie faturas profissionais, gerencie impostos e receba pagamentos mais rapidamente — tudo em um só lugar. A plataforma unificada de gestão empresarial projetada para empresas modernas em Moçambique.">
+            Create professional invoices, manage taxes, and get paid faster — all in one place. The unified business management platform designed for modern companies in Mozambique.
+          </p>
+          <div class="hero-buttons">
+            <a href="#start" class="primary-btn" data-en="Start Free Trial" data-pt="Iniciar Teste Gratuito">
+              Start Free Trial
+            </a>
+            <a href="#demo" class="secondary-btn demo-btn" data-en="Explore Demo" data-pt="Explorar Demonstração">
+              <i class="fas fa-play-circle"></i> Explore Demo
+            </a>
+          </div>
+          <div class="hero-trust">
+            <div class="hero-note">
+              <i class="fas fa-shield-alt"></i>
+              <span data-en="No credit card required" data-pt="Não é necessário cartão de crédito">No credit card required</span>
+            </div>
+            <div class="hero-note">
+              <i class="fas fa-check-circle"></i>
+              <span data-en="14-day free trial" data-pt="14 dias de teste gratuito">14-day free trial</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="WALAKA Dashboard">
+          <div class="image-overlay"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="modules-section">
-    <div class="modules-container">
-      <div class="module">
-        <i class="fas fa-file-invoice module-icon"></i>
-        <h3>Facturação Inteligente</h3>
-        <div class="module-price">MZN 149<span>/mês</span></div>
-        <ul class="module-features">
-          <li><i class="fas fa-check"></i>Facturação automática</li>
-          <li><i class="fas fa-check"></i>Facturas recorrentes</li>
-          <li><i class="fas fa-check"></i>Suporte multi-moeda</li>
-          <li><i class="fas fa-check"></i>Rastreamento de pagamentos</li>
-        </ul>
-        <button class="btn btn-trial">Começar</button>
+  <!-- Product Preview Section -->
+  <section class="product-preview" id="demo">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-en="See WALAKA in Action" data-pt="Veja a WALAKA em Ação">
+          See WALAKA in Action
+        </h2>
+        <p data-en="Experience how easy it is to manage your business with our intuitive platform" data-pt="Experimente como é fácil gerir o seu negócio com a nossa plataforma intuitiva">
+          Experience how easy it is to manage your business with our intuitive platform
+        </p>
       </div>
 
-      <div class="module">
-        <i class="fas fa-chart-line module-icon"></i>
-        <h3>Suite Comercial</h3>
-        <div class="module-price"><span></span></div>
-        <ul class="module-features">
-          <li><i class="fas fa-check"></i>Em Desenvolvimento</li>
-          <!--
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-        </ul>
-        <button class="btn btn-trial">Começar</button>
-            -->
-      </div>
-
-      <div class="module">
-        <i class="fas fa-calculator module-icon"></i>
-        <h3>Contabilidade Pro</h3>
-        <div class="module-price"><span></span></div>
-        <ul class="module-features">
-          <li><i class="fas fa-check"></i>Em Desenvolvimento</li>
-            <!--
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-        </ul>
-       <button class="btn btn-trial">Começar</button>
-            -->
-      </div>
-
-      <div class="module">
-        <i class="fas fa-coins module-icon"></i>
-        <h3>Suite Financeira</h3>
-        <div class="module-price"><span></span></div>
-        <ul class="module-features">
-          <li><i class="fas fa-check"></i>Em Desenvolvimento</li>
-          <!--
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-          <li><i class="fas fa-check"></i></li>
-        </ul>
-        <button class="btn btn-trial">Começar</button>
-            -->
+      <div class="preview-content">
+        <div class="preview-video">
+          <div class="video-placeholder">
+            <div class="play-button">
+              <i class="fas fa-play"></i>
+            </div>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="WALAKA Product Demo">
+          </div>
+        </div>
+        <div class="preview-features">
+          <div class="preview-feature">
+            <div class="feature-icon small">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <div class="feature-text">
+              <h4 data-en="Create Invoices in 30 Seconds" data-pt="Crie Faturas em 30 Segundos">Create Invoices in 30 Seconds</h4>
+              <p data-en="Use our pre-built templates to generate professional invoices instantly" data-pt="Use nossos modelos pré-construídos para gerar faturas profissionais instantaneamente">Use our pre-built templates to generate professional invoices instantly</p>
+            </div>
+          </div>
+          <div class="preview-feature">
+            <div class="feature-icon small">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div class="feature-text">
+              <h4 data-en="Automatic Tax Calculation" data-pt="Cálculo Automático de Impostos">Automatic Tax Calculation</h4>
+              <p data-en="Never worry about tax compliance again with our smart calculator" data-pt="Nunca mais se preocupe com conformidade fiscal com nosso calculador inteligente">Never worry about tax compliance again with our smart calculator</p>
+            </div>
+          </div>
+          <div class="preview-feature">
+            <div class="feature-icon small">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="feature-text">
+              <h4 data-en="Real-Time Financial Insights" data-pt="Insights Financeiros em Tempo Real">Real-Time Financial Insights</h4>
+              <p data-en="Track your business performance with intuitive dashboards" data-pt="Acompanhe o desempenho do seu negócio com painéis intuitivos">Track your business performance with intuitive dashboards</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="trust-section">
-    
-    <div class="trust-logos">
-      <img src="placeholder-logo1.svg" alt="Cliente 1">
-      <img src="placeholder-logo2.svg" alt="Cliente 2">
-      <img src="placeholder-logo3.svg" alt="Cliente 3">
-    </div>
-  </section>
-
-  <footer class="landing-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4>WALAKA</h4>
-        <p>Soluções empresariais para os desafios do amanhã.</p>
+  <!-- Templates Preview -->
+  <section class="templates" id="templates">
+    <div class="container">
+      <div class="templates-header">
+        <h3 data-en="Professional Invoice Templates" data-pt="Modelos de Faturas Profissionais">Professional Invoice Templates</h3>
+        <p data-en="Choose from our collection of beautiful, customizable templates" data-pt="Escolha entre nossa coleção de modelos bonitos e personalizáveis">Choose from our collection of beautiful, customizable templates</p>
       </div>
       
+      <div class="templates-grid">
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="https://images.unsplash.com/photo-1618044733300-9472054094ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Classic Template">
+            <div class="template-overlay">
+              <a href="#" class="template-btn" data-en="Preview Template" data-pt="Pré-visualizar Modelo">Preview Template</a>
+            </div>
+          </div>
+          <div class="template-info">
+            <h4>Classic</h4>
+            <p data-en="Professional & timeless" data-pt="Profissional e atemporal">Professional & timeless</p>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="https://images.unsplash.com/photo-1616531770192-6eaea74c2456?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Modern Template">
+            <div class="template-overlay">
+              <a href="#" class="template-btn" data-en="Preview Template" data-pt="Pré-visualizar Modelo">Preview Template</a>
+            </div>
+          </div>
+          <div class="template-info">
+            <h4>Modern</h4>
+            <p data-en="Clean & minimalist" data-pt="Limpo e minimalista">Clean & minimalist</p>
+          </div>
+        </div>
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Creative Template">
+            <div class="template-overlay">
+              <a href="#" class="template-btn" data-en="Preview Template" data-pt="Pré-visualizar Modelo">Preview Template</a>
+            </div>
+          </div>
+          <div class="template-info">
+            <h4>Creative</h4>
+            <p data-en="Bold & distinctive" data-pt="Ousado e distinto">Bold & distinctive</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-en="Everything You Need to Succeed" data-pt="Tudo o Que Precisa Para Ter Sucesso">
+          Everything You Need to Succeed
+        </h2>
+        <p data-en="WALAKA provides a comprehensive suite of tools tailored for Mozambican businesses of all sizes." data-pt="A WALAKA fornece um conjunto completo de ferramentas adaptadas para empresas moçambicanas de todos os tamanhos.">
+          WALAKA provides a comprehensive suite of tools tailored for Mozambican businesses of all sizes.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature Card 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <h3 data-en="Smart Invoicing" data-pt="Faturação Inteligente">Smart Invoicing</h3>
+          <p data-en="Create professional invoices, send automated reminders, and get paid faster with multiple payment options." data-pt="Crie faturas profissionais, envie lembretes automáticos e receba pagamentos mais rápidos com várias opções de pagamento.">
+            Create professional invoices, send automated reminders, and get paid faster with multiple payment options.
+          </p>
+          <ul class="feature-list">
+            <li data-en="Automatic invoice generation" data-pt="Geração automática de faturas">
+              <i class="fas fa-check"></i> Automatic invoice generation
+            </li>
+            <li data-en="Multiple currencies support" data-pt="Suporte para múltiplas moedas">
+              <i class="fas fa-check"></i> Multiple currencies support
+            </li>
+            <li data-en="Payment tracking" data-pt="Rastreamento de pagamentos">
+              <i class="fas fa-check"></i> Payment tracking
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature Card 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 data-en="Business Analytics" data-pt="Análise de Negócios">Business Analytics</h3>
+          <p data-en="Make data-driven decisions with powerful reports and dashboards that track your business performance." data-pt="Tome decisões baseadas em dados com relatórios e painéis poderosos que acompanham o desempenho do seu negócio.">
+            Make data-driven decisions with powerful reports and dashboards that track your business performance.
+          </p>
+          <ul class="feature-list">
+            <li data-en="Customizable dashboards" data-pt="Painéis personalizáveis">
+              <i class="fas fa-check"></i> Customizable dashboards
+            </li>
+            <li data-en="Financial reporting" data-pt="Relatórios financeiros">
+              <i class="fas fa-check"></i> Financial reporting
+            </li>
+            <li data-en="Performance insights" data-pt="Insights de desempenho">
+              <i class="fas fa-check"></i> Performance insights
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature Card 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 data-en="Client Management" data-pt="Gestão de Clientes">Client Management</h3>
+          <p data-en="Build stronger relationships with a complete view of your clients and their transaction history." data-pt="Construa relacionamentos mais fortes com uma visão completa dos seus clientes e do histórico de transações.">
+            Build stronger relationships with a complete view of your clients and their transaction history.
+          </p>
+          <ul class="feature-list">
+            <li data-en="Contact management" data-pt="Gestão de contactos">
+              <i class="fas fa-check"></i> Contact management
+            </li>
+            <li data-en="Transaction history" data-pt="Histórico de transações">
+              <i class="fas fa-check"></i> Transaction history
+            </li>
+            <li data-en="Client portal access" data-pt="Acesso ao portal do cliente">
+              <i class="fas fa-check"></i> Client portal access
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature Card 4 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tasks"></i>
+          </div>
+          <h3 data-en="Tax Compliance" data-pt="Conformidade Fiscal">Tax Compliance</h3>
+          <p data-en="Stay compliant with Mozambican tax regulations with our built-in tax calculator and reporting system." data-pt="Mantenha-se em conformidade com as regulamentações fiscais moçambicanas com nosso calculador de impostos e sistema de relatórios integrados.">
+            Stay compliant with Mozambican tax regulations with our built-in tax calculator and reporting system.
+          </p>
+          <ul class="feature-list">
+            <li data-en="Automatic tax calculation" data-pt="Cálculo automático de impostos">
+              <i class="fas fa-check"></i> Automatic tax calculation
+            </li>
+            <li data-en="VAT reporting" data-pt="Relatórios de IVA">
+              <i class="fas fa-check"></i> VAT reporting
+            </li>
+            <li data-en="Tax filing assistance" data-pt="Assistência para declaração de impostos">
+              <i class="fas fa-check"></i> Tax filing assistance
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature Card 5 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-export"></i>
+          </div>
+          <h3 data-en="Export & Share" data-pt="Exportar e Compartilhar">Export & Share</h3>
+          <p data-en="Easily export your data in various formats and share reports with stakeholders." data-pt="Exporte facilmente seus dados em vários formatos e compartilhe relatórios com as partes interessadas.">
+            Easily export your data in various formats and share reports with stakeholders.
+          </p>
+          <ul class="feature-list">
+            <li data-en="PDF export" data-pt="Exportação em PDF">
+              <i class="fas fa-check"></i> PDF export
+            </li>
+            <li data-en="Email integration" data-pt="Integração com email">
+              <i class="fas fa-check"></i> Email integration
+            </li>
+            <li data-en="Secure sharing" data-pt="Compartilhamento seguro">
+              <i class="fas fa-check"></i> Secure sharing
+            </li>
+          </ul>
+        </div>
+
+        <!-- Feature Card 6 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 data-en="Mobile Access" data-pt="Acesso Móvel">Mobile Access</h3>
+          <p data-en="Manage your business on the go with our mobile-friendly platform." data-pt="Gerencie seu negócio em movimento com nossa plataforma compatível com dispositivos móveis.">
+            Manage your business on the go with our mobile-friendly platform.
+          </p>
+          <ul class="feature-list">
+            <li data-en="Responsive design" data-pt="Design responsivo">
+              <i class="fas fa-check"></i> Responsive design
+            </li>
+            <li data-en="Invoice creation on mobile" data-pt="Criação de faturas em dispositivos móveis">
+              <i class="fas fa-check"></i> Invoice creation on mobile
+            </li>
+            <li data-en="Push notifications" data-pt="Notificações push">
+              <i class="fas fa-check"></i> Push notifications
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="use-cases" id="solutions">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-en="WALAKA Works for Everyone" data-pt="WALAKA Funciona para Todos">
+          WALAKA Works for Everyone
+        </h2>
+        <p data-en="Discover how various businesses in Mozambique use WALAKA to streamline their operations" data-pt="Descubra como várias empresas em Moçambique usam a WALAKA para otimizar suas operações">
+          Discover how various businesses in Mozambique use WALAKA to streamline their operations
+        </p>
+      </div>
+
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <h3 data-en="Freelancers" data-pt="Freelancers">Freelancers</h3>
+          <p data-en="Track projects, send professional invoices, and manage your client relations all in one place." data-pt="Acompanhe projetos, envie faturas profissionais e gerencie suas relações com clientes em um só lugar.">
+            Track projects, send professional invoices, and manage your client relations all in one place.
+          </p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h3 data-en="Consultants" data-pt="Consultores">Consultants</h3>
+          <p data-en="Simplify billing, track billable hours, and generate detailed financial reports for your practice." data-pt="Simplifique faturamento, acompanhe horas faturáveis e gere relatórios financeiros detalhados para sua prática.">
+            Simplify billing, track billable hours, and generate detailed financial reports for your practice.
+          </p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i class="fas fa-store"></i>
+          </div>
+          <h3 data-en="Retail Shops" data-pt="Lojas de Retalho">Retail Shops</h3>
+          <p data-en="Manage inventory, process sales, and streamline your accounting with our integrated platform." data-pt="Gerencie estoque, processe vendas e simplifique sua contabilidade com nossa plataforma integrada.">
+            Manage inventory, process sales, and streamline your accounting with our integrated platform.
+          </p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3 data-en="Startups" data-pt="Startups">Startups</h3>
+          <p data-en="Scale your financial operations without the overhead of expensive accounting software." data-pt="Escale suas operações financeiras sem o custo de software de contabilidade caro.">
+            Scale your financial operations without the overhead of expensive accounting software.
+          </p>
+        </div>
+
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i class="fas fa-concierge-bell"></i>
+          </div>
+          <h3 data-en="Service Providers" data-pt="Prestadores de Serviços">Service Providers</h3>
+          <p data-en="Schedule appointments, track client history, and automate your invoicing workflow." data-pt="Agende compromissos, acompanhe o histórico do cliente e automatize seu fluxo de trabalho de faturamento.">
+            Schedule appointments, track client history, and automate your invoicing workflow.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-en="What Our Customers Say" data-pt="O Que Nossos Clientes Dizem">
+          What Our Customers Say
+        </h2>
+        <p data-en="Hear from businesses like yours who have transformed their operations with WALAKA" data-pt="Ouça empresas como a sua que transformaram suas operações com a WALAKA">
+          Hear from businesses like yours who have transformed their operations with WALAKA
+        </p>
+      </div>
+
+      <div class="testimonials-slider">
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p data-en="WALAKA has transformed how we handle our invoicing. We've cut our accounting time in half and improved our cash flow by 30%. The tax compliance features are a lifesaver." data-pt="A WALAKA transformou a forma como lidamos com nossa faturação. Reduzimos nosso tempo de contabilidade pela metade e melhoramos nosso fluxo de caixa em 30%. Os recursos de conformidade fiscal são salvadores.">
+              WALAKA has transformed how we handle our invoicing. We've cut our accounting time in half and improved our cash flow by 30%. The tax compliance features are a lifesaver.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-image">
+                <img src="https://images.unsplash.com/photo-1557296387-5358ad7997bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Maria C.">
+              </div>
+              <div class="author-info">
+                <h4>Maria C.</h4>
+                <p>Consulting Business, Maputo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p data-en="As a freelancer, keeping track of invoices and taxes was always a nightmare. Since using WALAKA, I can focus on my design work instead of paperwork. The mobile app is perfect for sending invoices on the go." data-pt="Como freelancer, manter o controle de faturas e impostos sempre foi um pesadelo. Desde que comecei a usar a WALAKA, posso focar no meu trabalho de design em vez de burocracia. O aplicativo móvel é perfeito para enviar faturas em qualquer lugar.">
+              As a freelancer, keeping track of invoices and taxes was always a nightmare. Since using WALAKA, I can focus on my design work instead of paperwork. The mobile app is perfect for sending invoices on the go.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-image">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="João T.">
+              </div>
+              <div class="author-info">
+                <h4>João T.</h4>
+                <p>Graphic Designer, Beira</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p data-en="Our boutique needed a solution that could handle both inventory and invoicing. WALAKA's comprehensive tools have streamlined our operations and helped us grow our business by 25% this year alone." data-pt="Nossa boutique precisava de uma solução que pudesse lidar com estoque e faturação. As ferramentas abrangentes da WALAKA otimizaram nossas operações e nos ajudaram a crescer nosso negócio em 25% apenas este ano.">
+              Our boutique needed a solution that could handle both inventory and invoicing. WALAKA's comprehensive tools have streamlined our operations and helped us grow our business by 25% this year alone.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-image">
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Amina L.">
+              </div>
+              <div class="author-info">
+                <h4>Amina L.</h4>
+                <p>Boutique Owner, Nampula</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonials-nav">
+        <button class="testimonial-nav-btn prev"><i class="fas fa-chevron-left"></i></button>
+        <div class="testimonials-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="testimonial-nav-btn next"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <div class="badge-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="badge-text">
+            <h4 data-en="Built with Secure Technology" data-pt="Construído com Tecnologia Segura">Built with Secure Technology</h4>
+            <p data-en="Enterprise-grade security to protect your data" data-pt="Segurança de nível empresarial para proteger seus dados">Enterprise-grade security to protect your data</p>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <div class="badge-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="badge-text">
+            <h4 data-en="100% Private" data-pt="100% Privado">100% Private</h4>
+            <p data-en="Your data stays yours, always" data-pt="Seus dados permanecem seus, sempre">Your data stays yours, always</p>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <div class="badge-icon">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <div class="badge-text">
+            <h4 data-en="Regular Backups" data-pt="Backups Regulares">Regular Backups</h4>
+            <p data-en="Never lose your important business data" data-pt="Nunca perca seus dados empresariais importantes">Never lose your important business data</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-en="Simple, Transparent Pricing" data-pt="Preços Simples e Transparentes">
+          Simple, Transparent Pricing
+        </h2>
+        <p data-en="Choose the plan that fits your business needs" data-pt="Escolha o plano que se adapta às necessidades do seu negócio">
+          Choose the plan that fits your business needs
+        </p>
+      </div>
+
+      <div class="pricing-toggle">
+        <span data-en="Monthly" data-pt="Mensal">Monthly</span>
+        <label class="switch">
+          <input type="checkbox" id="pricing-toggle">
+          <span class="slider round"></span>
+        </label>
+        <span data-en="Annual" data-pt="Anual">Annual</span>
+        <div class="save-badge" data-en="Save 20%" data-pt="Economize 20%">Save 20%</div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card">
+          <div class="plan-header">
+            <h3 data-en="Starter" data-pt="Iniciante">Starter</h3>
+            <div class="plan-price">
+              <div class="price monthly">
+                <span class="currency">MT</span>
+                <span class="amount">1,500</span>
+                <span class="period" data-en="/month" data-pt="/mês">/month</span>
+              </div>
+              <div class="price annual hidden">
+                <span class="currency">MT</span>
+                <span class="amount">14,400</span>
+                <span class="period" data-en="/year" data-pt="/ano">/year</span>
+              </div>
+            </div>
+            <p class="plan-description" data-en="Perfect for freelancers and small businesses" data-pt="Perfeito para freelancers e pequenas empresas">
+              Perfect for freelancers and small businesses
+            </p>
+          </div>
+          <div class="plan-features">
+            <ul>
+              <li data-en="Up to 20 invoices per month" data-pt="Até 20 faturas por mês">
+                <i class="fas fa-check"></i> Up to 20 invoices per month
+              </li>
+              <li data-en="Basic reporting" data-pt="Relatórios básicos">
+                <i class="fas fa-check"></i> Basic reporting
+              </li>
+              <li data-en="5 clients" data-pt="5 clientes">
+                <i class="fas fa-check"></i> 5 clients
+              </li>
+              <li data-en="Email support" data-pt="Suporte por e-mail">
+                <i class="fas fa-check"></i> Email support
+              </li>
+            </ul>
+          </div>
+          <div class="plan-cta">
+            <a href="#" class="plan-btn" data-en="Get Started" data-pt="Começar">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Professional Plan -->
+        <div class="pricing-card popular">
+          <div class="popular-badge" data-en="Most Popular" data-pt="Mais Popular">Most Popular</div>
+          <div class="plan-header">
+            <h3 data-en="Professional" data-pt="Profissional">Professional</h3>
+            <div class="plan-price">
+              <div class="price monthly">
+                <span class="currency">MT</span>
+                <span class="amount">3,500</span>
+                <span class="period" data-en="/month" data-pt="/mês">/month</span>
+              </div>
+              <div class="price annual hidden">
+                <span class="currency">MT</span>
+                <span class="amount">33,600</span>
+                <span class="period" data-en="/year" data-pt="/ano">/year</span>
+              </div>
+            </div>
+            <p class="plan-description" data-en="Ideal for growing businesses" data-pt="Ideal para empresas em crescimento">
+              Ideal for growing businesses
+            </p>
+          </div>
+          <div class="plan-features">
+            <ul>
+              <li data-en="Unlimited invoices" data-pt="Faturas ilimitadas">
+                <i class="fas fa-check"></i> Unlimited invoices
+              </li>
+              <li data-en="Advanced reporting" data-pt="Relatórios avançados">
+                <i class="fas fa-check"></i> Advanced reporting
+              </li>
+              <li data-en="25 clients" data-pt="25 clientes">
+                <i class="fas fa-check"></i> 25 clients
+              </li>
+              <li data-en="Priority email support" data-pt="Suporte prioritário por e-mail">
+                <i class="fas fa-check"></i> Priority email support
+              </li>
+              <li data-en="Tax filing assistance" data-pt="Assistência de preenchimento fiscal">
+                <i class="fas fa-check"></i> Tax filing assistance
+              </li>
+            </ul>
+          </div>
+          <div class="plan-cta">
+            <a href="#" class="plan-btn primary" data-en="Get Started" data-pt="Começar">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+          <div class="plan-header">
+            <h3 data-en="Enterprise" data-pt="Empresarial">Enterprise</h3>
+            <div class="plan-price">
+              <div class="price monthly">
+                <span class="currency">MT</span>
+                <span class="amount">8,000</span>
+                <span class="period" data-en="/month" data-pt="/mês">/month</span>
+              </div>
+              <div class="price annual hidden">
+                <span class="currency">MT</span>
+                <span class="amount">76,800</span>
+                <span class="period" data-en="/year" data-pt="/ano">/year</span>
+              </div>
+            </div>
+            <p class="plan-description" data-en="For established businesses with complex needs" data-pt="Para empresas estabelecidas com necessidades complexas">
+              For established businesses with complex needs
+            </p>
+          </div>
+          <div class="plan-features">
+            <ul>
+              <li data-en="Unlimited everything" data-pt="Tudo ilimitado">
+                <i class="fas fa-check"></i> Unlimited everything
+              </li>
+              <li data-en="Custom reporting" data-pt="Relatórios personalizados">
+                <i class="fas fa-check"></i> Custom reporting
+              </li>
+              <li data-en="Unlimited clients" data-pt="Clientes ilimitados">
+                <i class="fas fa-check"></i> Unlimited clients
+              </li>
+              <li data-en="24/7 priority support" data-pt="Suporte prioritário 24/7">
+                <i class="fas fa-check"></i> 24/7 priority support
+              </li>
+              <li data-en="Multi-user access" data-pt="Acesso multi-usuário">
+                <i class="fas fa-check"></i> Multi-user access
+              </li>
+              <li data-en="Dedicated account manager" data-pt="Gerente de conta dedicado">
+                <i class="fas fa-check"></i> Dedicated account manager
+              </li>
+            </ul>
+          </div>
+          <div class="plan-cta">
+            <a href="#" class="plan-btn" data-en="Contact Sales" data-pt="Contatar Vendas">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" id="start">
+    <div class="container">
+      <div class="cta-content">
+        <h2 data-en="Start Growing Your Business Today" data-pt="Comece a Expandir o Seu Negócio Hoje">
+          Start Growing Your Business Today
+        </h2>
+        <p data-en="Join thousands of businesses in Mozambique using WALAKA to streamline their operations" data-pt="Junte-se a milhares de empresas em Moçambique que usam a WALAKA para otimizar suas operações">
+          Join thousands of businesses in Mozambique using WALAKA to streamline their operations
+        </p>
+        <div class="cta-buttons">
+          <a href="#" class="cta-primary-btn" data-en="Start Your Free Trial" data-pt="Inicie Seu Teste Gratuito">
+            Start Your Free Trial
+          </a>
+          <a href="#demo" class="cta-secondary-btn" data-en="Schedule Demo" data-pt="Agendar Demonstração">
+            Schedule Demo
+          </a>
+        </div>
+        <div class="cta-note">
+          <i class="fas fa-shield-alt"></i>
+          <span data-en="No credit card required. 14-day free trial." data-pt="Não é necessário cartão de crédito. Teste gratuito de 14 dias.">
+            No credit card required. 14-day free trial.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2 data-en="Get in Touch" data-pt="Entre em Contato">Get in Touch</h2>
+          <p data-en="Have questions about WALAKA? Our team is here to help." data-pt="Tem perguntas sobre a WALAKA? Nossa equipe está aqui para ajudar.">
+            Have questions about WALAKA? Our team is here to help.
+          </p>
+          
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-details">
+              <h4 data-en="Email Us" data-pt="Envie-nos um Email">Email Us</h4>
+              <p>info@walaka.co.mz</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h4 data-en="Call Us" data-pt="Ligue para Nós">Call Us</h4>
+              <p>+258 84 123 4567</p>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h4 data-en="Visit Us" data-pt="Visite-nos">Visit Us</h4>
+              <p>Av. 25 de Setembro, Maputo, Mocambique</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-form-container">
+          <form class="contact-form" id="contact-form">
+            <div class="form-group">
+              <label for="name" data-en="Name" data-pt="Nome">Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" data-en="Email" data-pt="Email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" data-en="Message" data-pt="Mensagem">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn" data-en="Send Message" data-pt="Enviar Mensagem">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <div class="footer-logo">
+            <a href="index.html">WALAKA</a>
+          </div>
+          <p data-en="Unified business management platform designed for modern companies in Mozambique." data-pt="Plataforma unificada de gestão empresarial projetada para empresas modernas em Moçambique.">
+            Unified business management platform designed for modern companies in Mozambique.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h4 data-en="Product" data-pt="Produto">Product</h4>
+          <ul>
+            <li><a href="#features" data-en="Features" data-pt="Funcionalidades">Features</a></li>
+            <li><a href="#pricing" data-en="Pricing" data-pt="Preços">Pricing</a></li>
+            <li><a href="#" data-en="Integrations" data-pt="Integrações">Integrations</a></li>
+            <li><a href="#" data-en="Updates" data-pt="Atualizações">Updates</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4 data-en="Resources" data-pt="Recursos">Resources</h4>
+          <ul>
+            <li><a href="#" data-en="Help Center" data-pt="Centro de Ajuda">Help Center</a></li>
+            <li><a href="#" data-en="Blog" data-pt="Blog">Blog</a></li>
+            <li><a href="#" data-en="Tutorials" data-pt="Tutoriais">Tutorials</a></li>
+            <li><a href="#" data-en="Support" data-pt="Suporte">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4 data-en="Company" data-pt="Empresa">Company</h4>
+          <ul>
+            <li><a href="#" data-en="About Us" data-pt="Sobre Nós">About Us</a></li>
+            <li><a href="#" data-en="Careers" data-pt="Carreiras">Careers</a></li>
+            <li><a href="#contact" data-en="Contact Us" data-pt="Contacte-nos">Contact Us</a></li>
+            <li><a href="#" data-en="Privacy Policy" data-pt="Política de Privacidade">Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4 data-en="Subscribe" data-pt="Subscrever">Subscribe</h4>
+          <p data-en="Get the latest news and updates" data-pt="Receba as últimas notícias e atualizações">
+            Get the latest news and updates
+          </p>
+          <form class="subscribe-form">
+            <input type="email" placeholder="Email address" data-en="Email address" data-pt="Endereço de email" required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p data-en="© 2023 WALAKA. All rights reserved." data-pt="© 2023 WALAKA. Todos os direitos reservados.">
+          © 2023 WALAKA. All rights reserved.
+        </p>
+      </div>
     </div>
   </footer>
+
+  <!-- Template Dialogs -->
+  <!-- Classic Template Dialog -->
+  <div class="template-dialog" id="template-classic">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Classic Invoice Template</h3>
+        <button class="dialog-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <img src="https://images.unsplash.com/photo-1618044733300-9472054094ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Classic Template Preview" class="template-large-preview">
+        <p class="template-description">
+          Our Classic template offers a professional and timeless design that works for businesses of all types. Its clean layout emphasizes clarity and readability, making it perfect for formal business correspondence.
+        </p>
+        <div class="template-features">
+          <h4>Features</h4>
+          <ul>
+            <li><i class="fas fa-check"></i> Professional, traditional layout</li>
+            <li><i class="fas fa-check"></i> Clear itemization</li>
+            <li><i class="fas fa-check"></i> Company branding area</li>
+            <li><i class="fas fa-check"></i> Detailed payment information</li>
+            <li><i class="fas fa-check"></i> Automatic tax calculation</li>
+            <li><i class="fas fa-check"></i> Space for terms and conditions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="dialog-btn secondary close-dialog">Close</button>
+        <button class="dialog-btn primary">Use This Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modern Template Dialog -->
+  <div class="template-dialog" id="template-modern">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Modern Invoice Template</h3>
+        <button class="dialog-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <img src="https://images.unsplash.com/photo-1616531770192-6eaea74c2456?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Modern Template Preview" class="template-large-preview">
+        <p class="template-description">
+          Our Modern template features a clean, minimalist design with ample white space for a contemporary look. Ideal for creative professionals, tech companies, and modern businesses looking for a sleek appearance.
+        </p>
+        <div class="template-features">
+          <h4>Features</h4>
+          <ul>
+            <li><i class="fas fa-check"></i> Minimalist, clean design</li>
+            <li><i class="fas fa-check"></i> Bold typography</li>
+            <li><i class="fas fa-check"></i> Visual data presentation</li>
+            <li><i class="fas fa-check"></i> Customizable color accents</li>
+            <li><i class="fas fa-check"></i> QR code payment option</li>
+            <li><i class="fas fa-check"></i> Digital signature support</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="dialog-btn secondary close-dialog">Close</button>
+        <button class="dialog-btn primary">Use This Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Creative Template Dialog -->
+  <div class="template-dialog" id="template-creative">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h3>Creative Invoice Template</h3>
+        <button class="dialog-close" aria-label="Close dialog">&times;</button>
+      </div>
+      <div class="dialog-body">
+        <img src="https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Creative Template Preview" class="template-large-preview">
+        <p class="template-description">
+          Our Creative template makes a bold statement with distinctive design elements and unique layout. Perfect for creative agencies, designers, photographers, and brands looking to stand out from the crowd.
+        </p>
+        <div class="template-features">
+          <h4>Features</h4>
+          <ul>
+            <li><i class="fas fa-check"></i> Bold, distinctive design</li>
+            <li><i class="fas fa-check"></i> Custom header image support</li>
+            <li><i class="fas fa-check"></i> Portfolio showcase integration</li>
+            <li><i class="fas fa-check"></i> Unique layout options</li>
+            <li><i class="fas fa-check"></i> Color palette customization</li>
+            <li><i class="fas fa-check"></i> Personalized thank you message</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="dialog-btn secondary close-dialog">Close</button>
+        <button class="dialog-btn primary">Use This Template</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
