@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #{{ invoice_number }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;  /* Green */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 21cm; /* A4 width */
+            height: 29.7cm; /* A4 height */
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 2cm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative; /* Important for absolute positioning of elements inside */
+        }
+
+        header {
+            background-color: #f0f4c3; /* Light yellow */
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        header .invoice-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e0f2f1; /* Light teal */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details .client-info {
+            width: 40%;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .invoice-details .client-info h2 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .invoice-details .details {
+            width: 40%;
+            text-align: right;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .invoice-details .details h2 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .items-table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .items-table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+        }
+
+        .items-table tbody tr:nth-child(odd) {
+            background-color: #f1f8e9; /* Light green */
+        }
+
+        .items-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .items-table tfoot td {
+            padding: 10px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .total-section {
+            background-color: #f0f4c3; /* Light yellow */
+            padding: 15px;
+            border-radius: 8px;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .total-section p {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .total-section .total-amount {
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .notes-section {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #7f8c8d;
+            background-color: #e0f2f1; /* Light teal */
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .notes-section h3 {
+            font-size: 1em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0.5cm;
+                height: auto;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="text-align: center; margin: 20px;">
+        <button onclick="window.print()">Print Invoice</button>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">WALAKA</div>
+            <div class="invoice-title">INVOICE</div>
+        </header>
+        <div class="invoice-details">
+            <div class="client-info">
+                <h2>Bill To</h2>
+                <p>Client Name: <span id="client-name">Jane Smith</span></p>
+                <p>Address: <span id="client-address">456 Oak Ave</span></p>
+                <p>NUIT: <span id="client-nuit">987654321</span></p>
+                <p>Email: <span id="client-email">jane@example.com</span></p>
+            </div>
+            <div class="details">
+                <h2>Invoice Details</h2>
+                <p>Invoice Number: <span id="invoice-number">INV-002</span></p>
+                <p>Issue Date: <span id="issue-date">2024-07-24</span></p>
+                <p>Due Date: <span id="due-date">2024-08-24</span></p>
+                <p>Status: <span id="invoice-status">Pending</span></p>
+            </div>
+        </div>
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>VAT (%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-items">
+                <!-- Invoice items will be populated dynamically -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">Subtotal</td>
+                    <td id="subtotal">0.00</td>
+                </tr>
+                <tr>
+                    <td colspan="4">VAT</td>
+                    <td id="vat-amount">0.00</td>
+                </tr>
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td id="total-amount">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="notes-section">
+            <h3>Payment Instructions</h3>
+            <p id="invoice-notes">Please send payment via bank transfer. Account details provided separately.</p>
+        </div>
+        <div class="footer">
+            <p>Contact us for any questions.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get invoice ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const invoiceId = urlParams.get('id');
+            
+            if (!invoiceId) {
+                // If no invoice ID, show sample data
+                return;
+            }
+            
+            // Get invoice data from localStorage
+            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
+            const invoice = invoices.find(inv => inv.invoiceNumber === invoiceId);
+            
+            if (!invoice) {
+                console.error('Invoice not found');
+                return;
+            }
+            
+            // Populate invoice data
+            document.getElementById('client-name').textContent = invoice.clientName || 'Client Name';
+            document.getElementById('client-address').textContent = invoice.clientAddress || 'Client Address';
+            document.getElementById('client-nuit').textContent = invoice.clientTaxId || 'N/A';
+            document.getElementById('client-email').textContent = invoice.clientEmail || 'N/A';
+            
+            document.getElementById('invoice-number').textContent = invoice.invoiceNumber;
+            document.getElementById('issue-date').textContent = new Date(invoice.issueDate).toLocaleDateString();
+            document.getElementById('due-date').textContent = new Date(invoice.dueDate).toLocaleDateString();
+            document.getElementById('invoice-status').textContent = invoice.status;
+            
+            // Populate items
+            const itemsContainer = document.getElementById('invoice-items');
+            
+            if (invoice.items && invoice.items.length > 0) {
+                itemsContainer.innerHTML = invoice.items.map(item => `
+                    <tr>
+                        <td>${item.description}</td>
+                        <td>${item.quantity}</td>
+                        <td>${parseFloat(item.price).toLocaleString()}</td>
+                        <td>${item.iva || 0}%</td>
+                        <td>${parseFloat(item.total).toLocaleString()}</td>
+                    </tr>
+                `).join('');
+            } else {
+                itemsContainer.innerHTML = `
+                    <tr>
+                        <td>${invoice.description || 'Services provided'}</td>
+                        <td>1</td>
+                        <td>${parseFloat(invoice.totalWithoutTaxes || 0).toLocaleString()}</td>
+                        <td>${invoice.vatRate || 0}%</td>
+                        <td>${parseFloat(invoice.totalAmountPayable || 0).toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+            
+            // Populate totals
+            document.getElementById('subtotal').textContent = parseFloat(invoice.totalWithoutTaxes || 0).toLocaleString();
+            document.getElementById('vat-amount').textContent = parseFloat(invoice.vatAmount || 0).toLocaleString();
+            document.getElementById('total-amount').textContent = parseFloat(invoice.totalAmountPayable || 0).toLocaleString();
+            
+            // Populate notes
+            if (invoice.notes) {
+                document.getElementById('invoice-notes').textContent = invoice.notes;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get data from localStorage
+            const invoiceData = JSON.parse(localStorage.getItem('currentInvoiceData'));
+            if (!invoiceData) {
+                console.error('No invoice data found');
+                return;
+            }
+
+            // Populate company info (Modern template specific styling)
+            const companyLogo = document.getElementById('company-logo');
+            if (invoiceData.company.logo) {
+                companyLogo.innerHTML = `<img src="${invoiceData.company.logo}" alt="${invoiceData.company.name}" style="max-width: 200px; height: auto;">`;
+            } else {
+                companyLogo.textContent = invoiceData.company.name;
+            }
+
+            // Client Details
+            document.getElementById('client-name').textContent = invoiceData.client.name;
+            document.getElementById('client-email').textContent = invoiceData.client.email;
+            document.getElementById('client-address').textContent = invoiceData.client.address;
+            document.getElementById('client-nuit').textContent = invoiceData.client.taxId;
+
+            // Invoice Details
+            document.getElementById('invoice-number').textContent = invoiceData.invoice.number;
+            document.getElementById('issue-date').textContent = formatDate(invoiceData.invoice.issueDate);
+            document.getElementById('due-date').textContent = formatDate(invoiceData.invoice.dueDate);
+            document.getElementById('payment-terms').textContent = invoiceData.invoice.paymentTerms;
+
+            // Populate Items with modern styling
+            const itemsContainer = document.getElementById('invoice-items');
+            itemsContainer.innerHTML = invoiceData.invoice.items.map(item => `
+                <tr>
+                    <td class="item-description">${item.description}</td>
+                    <td class="item-quantity">${item.quantity}</td>
+                    <td class="item-price">${formatCurrency(item.price)}</td>
+                    <td class="item-vat">${item.vat}</td>
+                    <td class="item-total">${formatCurrency(item.total)}</td>
+                </tr>
+            `).join('');
+
+            // Totals
+            document.getElementById('subtotal').textContent = formatCurrency(invoiceData.invoice.subtotal);
+            document.getElementById('vat-amount').textContent = formatCurrency(invoiceData.invoice.vat);
+            document.getElementById('total-amount').textContent = formatCurrency(invoiceData.invoice.total);
+
+            // Notes
+            document.getElementById('invoice-notes').textContent = invoiceData.invoice.notes || 'Thank you for your business.';
+
+            // Add print button if not in preview mode
+            if (!window.location.search.includes('preview=true')) {
+                const printBtn = document.createElement('button');
+                printBtn.className = 'print-btn no-print';
+                printBtn.textContent = 'Print Invoice';
+                printBtn.onclick = () => window.print();
+                document.body.insertBefore(printBtn, document.body.firstChild);
+            }
+        });
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString();
+        }
+
+        function formatCurrency(amount) {
+            if (typeof amount === 'string') amount = parseFloat(amount);
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+    </script>
+</body>
+</html>

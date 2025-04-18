@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Management | WALAKA</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar Menu -->
+    <nav class="sidebar">
+      <div class="logo">
+          <i class="fas fa-chart-line"></i>
+          <span>WALAKA</span>
+      </div>
+      
+      <div class="nav-menu">
+          <a href="dashboard.html" class="nav-item">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+          </a>
+          
+          <div class="nav-section">
+              <h3>Invoicing</h3>
+          </div>
+          <a href="invoices.html" class="nav-item active">
+              <i class="fas fa-file-invoice-dollar"></i>
+              <span>Invoices</span>
+          </a>
+
+          <a href="clients/clients.html" class="nav-item">
+              <i class="fas fa-users"></i>
+              <span>Clients</span>
+          </a>
+
+          <a href="products.html" class="nav-item">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Products</span>
+          </a>
+          
+          <div class="nav-section">
+              <h3>Commercial</h3>
+          </div>
+          <a href="#" class="nav-item">
+              <i class="fas fa-boxes"></i>
+              <span>Stock</span>
+          </a>
+          <a href="#" class="nav-item">
+              <i class="fas fa-truck"></i>
+              <span>Suppliers</span>
+          </a>
+          <a href="#" class="nav-item">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Movements</span>
+          </a>
+          <a href="#" class="nav-item">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>Expenses</span>
+          </a>
+          <div class="nav-section">
+              <h3>Accounting </h3>
+           <a href="#" class="nav-item">
+                <i class="fas fa-book"></i>
+                <span>Entries</span> 
+              </a>
+              <a href="#" class="nav-item">
+                <i class="fas fa-list-alt"></i>
+               <span> Chart of Accounts</span>
+              </a>
+              <a href="#" class="nav-item">
+                <i class="fas fa-percent"></i>
+                <span>Taxes</span> 
+              </a>
+            </div>
+
+          <div class="nav-section">
+              <h3>Finances</h3>
+          </div>
+         
+          <a href="#" class="nav-item">
+              <i class="fas fa-chart-pie"></i>
+              <span>Reports</span>
+          </a>
+          <a href="#" class="nav-item">
+              <i class="fas fa-chart-line"></i>
+              Key Metrics
+            </a>
+
+          <div class="nav-section">
+              <h3>Settings</h3>
+          </div>
+          <a href="settings.html" class="nav-item">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+          </a>
+          <a href="profile.html" class="nav-item">
+              <i class="fas fa-user-cog"></i>
+              <span>Account</span>
+          </a>
+          <a href="#" class="nav-item">
+              <i class="fas fa-question-circle"></i>
+              <span>Help</span>
+          </a>
+      </div>
+  </nav>
+    <!-- Main Content Area -->
+    <main class="main-container">
+      <header class="top-bar">
+        <div class="hamburger-menu" id="hamburger-menu">
+          <i class="fas fa-bars"></i>
+        </div>
+        
+        <div class="search-bar">
+          <input type="text" placeholder="Search..." aria-label="Search">
+          <button type="button" aria-label="Search button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <div class="user-menu">
+          <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="badge">3</span>
+          </div>
+          
+          <div class="user-profile dropdown">
+            <div class="avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <span class="user-name">Admin</span>
+            <button class="dropdown-toggle">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu">
+              <a href="#">My Profile</a>
+              <a href="#">Settings</a>
+              <a href="#">Log Out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        <div class="container">
+          <div class="page-header">
+            <h1>Client Management</h1>
+            <button id="add-new-client-btn" class="primary-btn">
+              <i class="fas fa-plus"></i> Add New Client
+            </button>
+          </div>
+
+          <div class="client-management">
+            <!-- Client Form Section -->
+            <section class="frame frame-left" id="client-form-container">
+              <h2 id="form-title">New Client</h2>
+              <form id="client-form">
+                <div class="form-group">
+                  <label for="client-type">Client Type</label>
+                  <div class="radio-group">
+                    <label class="radio-label">
+                      <input type="radio" name="client-type" value="business" id="business-type">
+                      <span>Business</span>
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="client-type" value="individual" id="individual-type" checked>
+                      <span>Individual</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group select-wrapper">
+                    <label for="salutation">Salutation</label>
+                    <select id="salutation" name="salutation" required>
+                      <option value="">Select...</option>
+                      <option value="Mr.">Mr.</option>
+                      <option value="Ms.">Ms.</option>
+                      <option value="Mrs.">Mrs.</option>
+                      <option value="Dr.">Dr.</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" required placeholder="First Name">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" required placeholder="Last Name">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="company-name">Company Name</label>
+                  <input type="text" id="company-name" name="company-name" placeholder="Company Name">
+                </div>
+                
+                <div class="form-group select-wrapper">
+                  <label for="display-name">Display Name</label>
+                  <select id="display-name" name="display-name" required>
+                    <option value="">Select or type...</option>
+                  </select>
+                </div>
+                
+                <div class="form-group select-wrapper">
+                  <label for="currency">Currency</label>
+                  <select id="currency" name="currency" required>
+                    <option value="USD">US Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="GBP">British Pound</option>
+                  </select>
+                  <p class="currency-note">Currency cannot be edited as multi-currency handling is unavailable</p>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <div class="email-input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" required placeholder="client@example.com">
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="work-phone">Work Phone</label>
+                    <div class="phone-input-wrapper">
+                      <i class="fas fa-phone"></i>
+                      <input type="tel" id="work-phone" name="work-phone" placeholder="Work Phone">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <div class="phone-input-wrapper">
+                      <i class="fas fa-mobile-alt"></i>
+                      <input type="tel" id="mobile" name="mobile" placeholder="Mobile">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="tab-container">
+                  <div class="tabs">
+                    <button type="button" class="tab-btn active" data-tab="details">Details</button>
+                    <button type="button" class="tab-btn" data-tab="address">Address</button>
+                    <button type="button" class="tab-btn" data-tab="contacts">Contacts</button>
+                    <button type="button" class="tab-btn" data-tab="custom">Custom Fields</button>
+                  </div>
+                  
+                  <div class="tab-content">
+                    <!-- Details Tab -->
+                    <div class="tab-pane active" id="details-tab">
+                      <div class="form-group select-wrapper">
+                        <label for="tax-rate">Tax Rate</label>
+                        <select id="tax-rate" name="tax-rate">
+                          <option value="">Select a Tax</option>
+                          <option value="standard">Standard (20%)</option>
+                          <option value="reduced">Reduced (5%)</option>
+                          <option value="zero">Zero (0%)</option>
+                          <option value="exempt">Tax Exempt</option>
+                          <option value="other">Other</option>
+                        </select>
+                        <p class="tax-note">To associate more than one tax, you need to create a tax group in Settings.</p>
+                      </div>
+                      
+                      <div id="other-vat-container" class="form-group">
+                        <label for="custom-vat">Custom VAT Rate (%)</label>
+                        <input type="number" id="custom-vat" name="custom-vat" min="0" max="100" step="0.1" placeholder="Enter custom VAT rate">
+                      </div>
+                      
+                      <div class="form-group select-wrapper">
+                        <label for="payment-terms">Payment Terms</label>
+                        <select id="payment-terms" name="payment-terms" required>
+                          <option value="due-receipt">Due on Receipt</option>
+                          <option value="net-15">Net 15</option>
+                          <option value="net-30">Net 30</option>
+                          <option value="net-60">Net 60</option>
+                        </select>
+                      </div>
+                      
+                      <div class="form-group select-wrapper">
+                        <label for="price-list">Price List</label>
+                        <select id="price-list" name="price-list">
+                          <option value="">Select a Price List</option>
+                          <option value="standard">Standard</option>
+                          <option value="wholesale">Wholesale</option>
+                          <option value="vip">VIP Customer</option>
+                        </select>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="enable-portal">Enable Portal?</label>
+                        <div class="checkbox-wrapper">
+                          <input type="checkbox" id="enable-portal" name="enable-portal">
+                          <label for="enable-portal">Allow portal access for this client</label>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group select-wrapper">
+                        <label for="portal-language">Portal Language</label>
+                        <select id="portal-language" name="portal-language">
+                          <option value="en">English</option>
+                          <option value="fr">French</option>
+                          <option value="es">Spanish</option>
+                          <option value="de">German</option>
+                        </select>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label>Documents</label>
+                        <div class="file-upload-wrapper">
+                          <button type="button" class="upload-btn">
+                            <i class="fas fa-upload"></i> Upload File
+                          </button>
+                          <p class="upload-note">You can upload a maximum of 3 files, 10MB each</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Address Tab -->
+                    <div class="tab-pane" id="address-tab">
+                      <div class="address-section">
+                        <h3>Billing Address</h3>
+                        <div class="form-group">
+                          <label for="billing-attention">Attention</label>
+                          <input type="text" id="billing-attention" name="billing-attention" placeholder="Attention">
+                        </div>
+                        
+                        <div class="form-group select-wrapper">
+                          <label for="billing-country">Country/Region</label>
+                          <select id="billing-country" name="billing-country">
+                            <option value="">Select or type to add</option>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="au">Australia</option>
+                          </select>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="billing-street1">Address Line 1</label>
+                          <input type="text" id="billing-street1" name="billing-street1" placeholder="Street 1">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="billing-street2">Address Line 2</label>
+                          <input type="text" id="billing-street2" name="billing-street2" placeholder="Street 2">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="billing-city">City</label>
+                          <input type="text" id="billing-city" name="billing-city" placeholder="City">
+                        </div>
+                        
+                        <div class="form-group select-wrapper">
+                          <label for="billing-state">State</label>
+                          <select id="billing-state" name="billing-state">
+                            <option value="">Select or type to add</option>
+                          </select>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="billing-zip">ZIP/Postal Code</label>
+                          <input type="text" id="billing-zip" name="billing-zip" placeholder="ZIP Code">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="billing-phone">Phone</label>
+                          <input type="tel" id="billing-phone" name="billing-phone" placeholder="Phone">
+                        </div>
+                      </div>
+                      
+                      <div class="address-divider">
+                        <button type="button" id="copy-billing" class="link-btn">
+                          <i class="fas fa-copy"></i> Copy billing address
+                        </button>
+                      </div>
+                      
+                      <div class="address-section">
+                        <h3>Shipping Address</h3>
+                        <div class="form-group">
+                          <label for="shipping-attention">Attention</label>
+                          <input type="text" id="shipping-attention" name="shipping-attention" placeholder="Attention">
+                        </div>
+                        
+                        <div class="form-group select-wrapper">
+                          <label for="shipping-country">Country/Region</label>
+                          <select id="shipping-country" name="shipping-country">
+                            <option value="">Select or type to add</option>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="ca">Canada</option>
+                            <option value="au">Australia</option>
+                          </select>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="shipping-street1">Address Line 1</label>
+                          <input type="text" id="shipping-street1" name="shipping-street1" placeholder="Street 1">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="shipping-street2">Address Line 2</label>
+                          <input type="text" id="shipping-street2" name="shipping-street2" placeholder="Street 2">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="shipping-city">City</label>
+                          <input type="text" id="shipping-city" name="shipping-city" placeholder="City">
+                        </div>
+                        
+                        <div class="form-group select-wrapper">
+                          <label for="shipping-state">State</label>
+                          <select id="shipping-state" name="shipping-state">
+                            <option value="">Select or type to add</option>
+                          </select>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="shipping-zip">ZIP/Postal Code</label>
+                          <input type="text" id="shipping-zip" name="shipping-zip" placeholder="ZIP Code">
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="shipping-phone">Phone</label>
+                          <input type="tel" id="shipping-phone" name="shipping-phone" placeholder="Phone">
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Contacts Tab -->
+                    <div class="tab-pane" id="contacts-tab">
+                      <div class="contacts-list" id="contacts-list">
+                        <p class="no-contacts-msg">No additional contacts added yet</p>
+                      </div>
+                      
+                      <button type="button" id="add-contact-btn" class="secondary-btn">
+                        <i class="fas fa-plus"></i> Add Contact Person
+                      </button>
+                    </div>
+                    
+                    <!-- Custom Fields Tab -->
+                    <div class="tab-pane" id="custom-tab">
+                      <div class="form-group">
+                        <label for="reference">Reference Number</label>
+                        <input type="text" id="reference" name="reference" placeholder="Reference">
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="industry">Industry</label>
+                        <select id="industry" name="industry">
+                          <option value="">Select an Industry</option>
+                          <option value="retail">Retail</option>
+                          <option value="manufacturing">Manufacturing</option>
+                          <option value="services">Services</option>
+                          <option value="construction">Construction</option>
+                          <option value="technology">Technology</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" name="notes" rows="4" placeholder="Add any notes about this client"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-footer">
+                  <button type="submit" id="save-client-btn" class="primary-btn">Save Client</button>
+                  <button type="button" id="cancel-btn" class="secondary-btn">Cancel</button>
+                </div>
+              </form>
+            </section>
+
+            <!-- Client List Section -->
+            <section class="frame frame-right" id="client-list-container">
+              <div class="search-bar-frame">
+                <div class="search-input-wrapper">
+                  <i class="fas fa-search"></i>
+                  <input type="text" id="client-search" placeholder="Search clients...">
+                </div>
+                <div class="filter-options">
+                  <select id="status-filter">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                  <select id="type-filter">
+                    <option value="all">All Types</option>
+                    <option value="business">Business</option>
+                    <option value="individual">Individual</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="client-list-header">
+                <h3>Client List</h3>
+                <div class="view-options">
+                  <button id="grid-view-btn" class="view-btn active" aria-label="Grid view">
+                    <i class="fas fa-th-large"></i>
+                  </button>
+                  <button id="list-view-btn" class="view-btn" aria-label="List view">
+                    <i class="fas fa-list"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div id="client-list" class="client-list grid-view">
+                <!-- Client items will be populated by JavaScript -->
+                <div class="loading-indicator">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <span>Loading clients...</span>
+                </div>
+              </div>
+              
+              <div class="pagination-controls">
+                <button id="prev-page" class="pagination-btn" disabled>
+                  <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page" class="pagination-btn" disabled>
+                  Next <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for Contact Person -->
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Contact Person</h3>
+        <button type="button" class="close-modal" aria-label="Close modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="form-group select-wrapper">
+              <label for="contact-salutation">Salutation</label>
+              <select id="contact-salutation" name="contact-salutation">
+                <option value="">Select...</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Dr.">Dr.</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="contact-first-name">First Name</label>
+              <input type="text" id="contact-first-name" name="contact-first-name" required placeholder="First Name">
+            </div>
+            
+            <div class="form-group">
+              <label for="contact-last-name">Last Name</label>
+              <input type="text" id="contact-last-name" name="contact-last-name" required placeholder="Last Name">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact-email">Email Address</label>
+            <div class="email-input-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="contact-email" name="contact-email" required placeholder="contact@example.com">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-work-phone">Work Phone</label>
+              <div class="phone-input-wrapper">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="contact-work-phone" name="contact-work-phone" placeholder="Work Phone">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="contact-mobile">Mobile</label>
+              <div class="phone-input-wrapper">
+                <i class="fas fa-mobile-alt"></i>
+                <input type="tel" id="contact-mobile" name="contact-mobile" placeholder="Mobile">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact-designation">Designation/Role</label>
+            <input type="text" id="contact-designation" name="contact-designation" placeholder="e.g. Accountant, Manager">
+          </div>
+          
+          <div class="form-group">
+            <label for="is-primary-contact">Primary Contact?</label>
+            <div class="checkbox-wrapper">
+              <input type="checkbox" id="is-primary-contact" name="is-primary-contact">
+              <label for="is-primary-contact">Set as primary contact for this client</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="save-contact-btn" class="primary-btn">Save Contact</button>
+        <button type="button" id="cancel-contact-btn" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Confirm Deletion</h3>
+        <button type="button" class="close-modal" aria-label="Close modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this client? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="confirm-delete-btn" class="danger-btn">Delete</button>
+        <button type="button" id="cancel-delete-btn" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <i id="toast-icon" class="fas fa-check-circle"></i>
+      <div class="toast-message" id="toast-message">Client saved successfully!</div>
+    </div>
+    <button class="toast-close" id="toast-close" aria-label="Close notification">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <script src="./scripts.js"></script>
+  <script src="./client-form.js"></script>
+  <script src="./client-list.js"></script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
+
+    const supabaseUrl = 'https://zqnthduqpzriydgbdojy.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxbnRoZHVxcHpyaXlkZ2Jkb2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4OTkzOTcsImV4cCI6MjA1NzQ3NTM5N30.fZqsPqkbJ4m-Lp7BRTAOuxU5_6MXj8QJERUTreshKIU';
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    async function displayUserName() {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          console.error('Erro ao obter sessão:', error?.message);
+          document.getElementById('user-name').textContent = 'Não logado';
+          return;
+        }
+
+        const user = session.user;
+        if (!user) {
+          document.getElementById('user-name').textContent = 'Não logado';
+          return;
+        }
+
+        const { data: profileData, error: profileError } = await supabase
+          .from('users')
+          .select('username, logo')
+          .eq('id', user.id)
+          .single();
+
+        if (profileError) {
+          console.error('Erro ao buscar perfil:', profileError.message);
+          return;
+        }
+
+        const userNameSpan = document.getElementById('user-name');
+        if (userNameSpan) {
+          userNameSpan.textContent = profileData.username || 'Usuário Desconhecido';
+        }
+
+        const userAvatar = document.querySelector('.avatar');
+        if (userAvatar && profileData.logo) {
+          userAvatar.innerHTML = `<img src="${profileData.logo}" alt="User Logo" style="width: 100%; height: 100%; border-radius: 50%;">`;
+        }
+      } catch (err) {
+        console.error('Erro inesperado:', err);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', displayUserName);
+
+    async function handleSignOut() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Erro ao sair:', error);
+      } else {
+        window.location.href = '/login.html';
+      }
+    }
+
+    let clients = [];
+
+    async function fetchClients() {
+      const { data, count, error } = await supabase
+        .from('clients')
+        .select('*', { count: 'exact' });
+
+      if (error) {
+        console.error('Error fetching clients:', error);
+        return;
+      }
+
+      clients = data;
+      displayClients();
+
+      const clientListHeader = document.querySelector('#client-list h3');
+      if (clientListHeader) {
+        clientListHeader.textContent = `Client List (${count || 0})`;
+      }
+    }
+
+    async function saveClient() {
+      const name = document.getElementById('name').value;
+      const nuit = document.getElementById('nuit').value || null;
+      const email = document.getElementById('email').value || null;
+      const phone = document.getElementById('phone').value || null;
+      const status = document.getElementById('status').value; // Trim whitespace
+
+      if (!name) {
+        console.error('Error: Name is required.');
+        alert('Please provide a name.');
+        return;
+      }
+
+      // Log the data being sent to Supabase
+      console.log('Inserting client:', { name, nuit, email, phone, status });
+
+      try {
+        // Test with hardcoded status value
+        const { data, error } = await supabase
+          .from('clients')
+          .insert([{ name, nuit, email, phone, status: status }]) // Replace 'active' with status to test
+          .select();
+
+        if (error) {
+          console.error('Error saving client:', error.message);
+          alert(`Error saving client: ${error.message}`);
+          return;
+        }
+
+        clients.push(data[0]);
+        displayClients();
+        document.getElementById('client-form').reset();
+
+        // Check for return parameter and redirect
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnTo = urlParams.get('returnTo');
+        if (returnTo) {
+          window.location.href = returnTo;
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    }
+
+    async function editClient(index) {
+      const client = clients[index];
+      document.getElementById('name').value = client.name;
+      document.getElementById('nuit').value = client.nuit || '';
+      document.getElementById('email').value = client.email || '';
+      document.getElementById('phone').value = client.phone || '';
+      document.getElementById('status').value = client.status;
+
+      const saveButton = document.querySelector('#client-form button[type="button"]');
+      saveButton.onclick = async function () {
+        const updatedName = document.getElementById('name').value;
+        const updatedNuit = document.getElementById('nuit').value || null;
+        const updatedEmail = document.getElementById('email').value || null;
+        const updatedPhone = document.getElementById('phone').value || null;
+        const updatedStatus = document.getElementById('status').value;
+
+        const { error } = await supabase
+          .from('clients')
+          .update({ name: updatedName, nuit: updatedNuit, email: updatedEmail, phone: updatedPhone, status: updatedStatus })
+          .eq('id', client.id);
+
+        if (error) {
+          console.error('Error updating client:', error);
+          return;
+        }
+
+        clients[index] = { ...client, name: updatedName, nuit: updatedNuit, email: updatedEmail, phone: updatedPhone, status: updatedStatus };
+        displayClients();
+        document.getElementById('client-form').reset();
+        saveButton.onclick = saveClient;
+      };
+    }
+
+    async function deleteClient(index) {
+      const client = clients[index];
+      const { error } = await supabase.from('clients').delete().eq('id', client.id);
+      if (error) {
+        console.error('Error deleting client:', error);
+        return;
+      }
+      clients.splice(index, 1);
+      displayClients();
+    }
+
+    async function toggleClientStatus(index) {
+      const client = clients[index];
+      const updatedStatus = client.status === 'active' ? 'inactive' : 'active';
+
+      const { error } = await supabase
+        .from('clients')
+        .update({ status: updatedStatus })
+        .eq('id', client.id);
+
+      if (error) {
+        console.error('Error toggling client status:', error);
+        return;
+      }
+
+      clients[index].status = updatedStatus;
+      displayClients();
+    }
+
+    function displayClients() {
+      const clientList = document.getElementById('client-list');
+      clientList.innerHTML = '<h3>Client List</h3>';
+      clients.forEach((client, index) => {
+        const clientItem = document.createElement('div');
+        clientItem.className = 'client-item';
+        clientItem.innerHTML = `
+          <span>${client.name} - ${client.nuit || 'N/A'} - ${client.email || 'N/A'} - ${client.phone || 'N/A'} - ${client.status}</span>
+          <div>
+            <button class="edit-btn" onclick="editClient(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteClient(${index})">Delete</button>
+            <button class="status-btn" onclick="toggleClientStatus(${index})">${client.status === 'active' ? 'Inactivate' : 'Activate'}</button>
+          </div>
+        `;
+        clientList.appendChild(clientItem);
+      });
+    }
+
+    function subscribeToClients() {
+      supabase
+        .channel('clients-changes')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'clients' },
+          (payload) => {
+            console.log('Change received:', payload);
+            fetchClients();
+          }
+        )
+        .subscribe();
+    }
+
+    // Attach functions to the global window object
+    window.saveClient = saveClient;
+    window.editClient = editClient;
+    window.deleteClient = deleteClient;
+    window.filterClients = filterClients;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchClients();
+      subscribeToClients();
+    });
+
+    function filterClients() {
+      const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+      const clientItems = document.querySelectorAll('.client-item');
+
+      clientItems.forEach((item) => {
+        const clientText = item.querySelector('span').textContent.toLowerCase();
+        if (clientText.includes(searchTerm)) {
+          item.style.display = 'grid';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Example: When a new client is added
+    function addClient(client) {
+      let clients = JSON.parse(localStorage.getItem('clients')) || [];
+      client.id = generateClientId(); // Generate a unique ID for the client
+      clients.push(client);
+      localStorage.setItem('clients', JSON.stringify(clients));
+    }
+
+    // Example: When a client is updated
+    function updateClient(client) {
+      let clients = JSON.parse(localStorage.getItem('clients')) || [];
+      const index = clients.findIndex(c => c.id === client.id);
+      if (index !== -1) {
+        clients[index] = client;
+        localStorage.setItem('clients', JSON.stringify(clients));
+      }
+    }
+
+    // Example: Function to generate a unique client ID
+    function generateClientId() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    // Função para buscar nomes de clientes da tabela clients no Supabase
+    async function fetchClientNames() {
+      const { data, error } = await supabase
+        .from('clients') // Referência à tabela clients
+        .select('id, name'); // Selecionar as colunas id e name
+
+      if (error) {
+        console.error('Erro ao buscar nomes de clientes:', error);
+        return [];
+      }
+
+      return data; // Retornar o array de objetos de clientes
+    }
+
+    // Chamar a função e registrar os resultados
+    fetchClientNames().then(clientNames => {
+      console.log('Nomes dos Clientes:', clientNames);
+      // Você também pode preencher um dropdown ou realizar outras ações com os nomes dos clientes aqui
+    });
+
+    async function populateClientOptions() {
+      const clients = await fetchClientNames(); // Buscar nomes de clientes do Supabase
+      clientNameSelect.innerHTML = '<option value="" disabled selected>Select a client</option>'; // Limpar opções existentes
+      clients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.id; // Assumindo que cada cliente tem um ID exclusivo
+        option.textContent = client.name; // Assumindo que cada cliente tem uma propriedade de nome
+        clientNameSelect.appendChild(option);
+      });
+    }
+  </script>
+  <script>
+    const menuToggle = document.createElement('div');
+    menuToggle.className = 'menu-toggle';
+    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    document.querySelector('.top-bar').prepend(menuToggle);
+
+    menuToggle.addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('active');
+    });
+
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+  </script>
+</body>
+</html>

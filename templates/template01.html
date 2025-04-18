@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Invoice Template</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --text-color: #333;
+            --light-text: #666;
+            --border-color: #e0e0e0;
+            --background-color: #f5f5f5;
+            --white: #fff;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--white);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+        
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .company-info h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .company-info p {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 5px;
+        }
+        
+        .invoice-details {
+            text-align: right;
+        }
+        
+        .invoice-details h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .invoice-details p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .client-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--background-color);
+            border-radius: 6px;
+        }
+        
+        .client-info h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .client-info p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .invoice-items th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .invoice-items td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+        
+        .invoice-items tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .invoice-totals {
+            text-align: right;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .total-row {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .grand-total {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 10px;
+            color: var(--primary-color);
+        }
+        
+        .notes {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--background-color);
+            border-radius: 6px;
+        }
+        
+        .notes h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .notes p {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        .invoice-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--light-text);
+            text-align: center;
+        }
+        
+        @media print {
+            body {
+                background-color: var(--white);
+            }
+            
+            .invoice-container {
+                max-width: 100%;
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="company-info">
+                <div id="company-logo">
+                    <!-- Logo will be inserted here -->
+                </div>
+                <h1 id="company-name">Company Name</h1>
+                <p id="company-address">Company Address</p>
+                <p>Email: <span id="company-email">info@company.com</span></p>
+                <p>Phone: <span id="company-phone">+258 XX XXX XXXX</span></p>
+                <p>NUIT: <span id="company-nuit">123456789</span></p>
+            </div>
+            <div class="invoice-details">
+                <h2>INVOICE</h2>
+                <p>Invoice #: <span id="invoice-number">INV-001</span></p>
+                <p>Date: <span id="issue-date">01/01/2023</span></p>
+                <p>Due Date: <span id="due-date">31/01/2023</span></p>
+                <p>Project: <span id="project-name"></span></p>
+            </div>
+        </div>
+        
+        <div class="client-info">
+            <h3>Bill To:</h3>
+            <p id="client-name">Client Name</p>
+            <p id="client-address">Client Address</p>
+            <p>NUIT: <span id="client-nuit">987654321</span></p>
+            <p>Email: <span id="client-email">client@example.com</span></p>
+            <p>Contact: <span id="client-contact">+258 XX XXX XXXX</span></p>
+        </div>
+        
+        <table class="invoice-items">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>VAT (%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-items-body">
+                <!-- Items will be inserted here dynamically -->
+            </tbody>
+        </table>
+        
+        <div class="invoice-totals">
+            <div class="total-row">Subtotal: <span id="subtotal">MZN 0.00</span></div>
+            <div class="total-row">VAT: <span id="total-vat">MZN 0.00</span></div>
+            <div class="total-row">Discount: <span id="discount">MZN 0.00</span></div>
+            <div class="total-row grand-total">Total: <span id="total">MZN 0.00</span></div>
+        </div>
+        
+        <div class="notes">
+            <h4>Notes:</h4>
+            <p id="notes">Thank you for your business.</p>
+        </div>
+        
+        <div class="invoice-footer">
+            <p>This invoice was generated by WALAKA Invoice Generator</p>
+            <p>Software Certification Number: <span id="software-cert-no">AT-XXXX-XXXX</span></p>
+            <p>Document Control Hash: <span id="invoice-hash">XXXXXXXX</span></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #{{ invoice_number }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Seus estilos CSS permanecem aqui */
+        :root {
+            --primary-color: #3498db;  /* Default primary color */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 21cm; /* A4 width */
+            height: 29.7cm; /* A4 height */
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 2cm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative; /* Important for absolute positioning of elements inside */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        header .logo img {
+            max-height: 60px;
+            max-width: 200px;
+            margin-right: 15px;
+        }
+
+        header .invoice-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details .client-info {
+            width: 40%;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .invoice-details .client-info h2 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .invoice-details .details {
+            width: 40%;
+            text-align: right;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .invoice-details .details h2 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .items-table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .items-table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+        }
+
+        .items-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .items-table tfoot td {
+            padding: 10px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .total-section {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .total-section p {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .total-section .total-amount {
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .notes-section {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .notes-section h3 {
+            font-size: 1em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0.5cm;
+                height: auto;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="invoice-container" id="invoicePDF">
+        <header class="invoice-header">
+            <div class="company-info">
+                <div id="company-logo">
+                    </div>
+                <p id="display-company-address"></p>
+                <p id="display-company-email"></p>
+            </div>
+            <div class="invoice-details">
+                <h2>INVOICE</h2>
+                <p>Invoice #: <span id="display-invoice-number"></span></p>
+                <p>Date: <span id="display-issue-date"></span></p>
+                <p>Due Date: <span id="display-due-date"></span></p>
+            </div>
+        </header>
+
+        <div class="client-info">
+            <h3>Bill To:</h3>
+            <p id="display-client-name"></p>
+            <p id="display-client-address"></p>
+            <p>NUIT: <span id="display-clientTaxId"></span></p>
+        </div>
+
+        <table class="invoice-items">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>VAT (16%)</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="display-items">
+                </tbody>
+        </table>
+
+        <div class="invoice-totals">
+            <div class="total-row">Subtotal: <span id="display-subtotal"></span></div>
+            <div class="total-row">VAT: <span id="display-totalVat"></span></div>
+            <div class="total-row grand-total">Total: <span id="display-total"></span></div>
+        </div>
+
+        <div class="notes-section">
+            <h4>Notes:</h4>
+            <p id="display-notes"></p>
+        </div>
+
+        <footer class="footer">
+           
+        </footer>
+    </div>
+
+    <script>
+        // Get invoice data from parent window or localStorage
+        let invoiceData = {};
+        
+        try {
+            // Try to get data from parent window first
+            if (window.opener && window.opener.currentInvoiceData) {
+                invoiceData = window.opener.currentInvoiceData;
+            } else {
+                // Fallback to localStorage
+                invoiceData = JSON.parse(localStorage.getItem('currentInvoiceData'));
+            }
+        } catch (e) {
+            console.error('Error loading invoice data:', e);
+        }
+
+        function bindInvoiceData() {
+            if (!invoiceData) return;
+
+            // Bind company info
+            document.querySelector('.company-info h1').textContent = invoiceData.companyName || '';
+            document.querySelector('.company-registration').innerHTML = `
+                NUIT: ${invoiceData.companyNUIT || ''}<br>
+                Reg. Comercial: ${invoiceData.commercialRegNo || ''}
+            `;
+            
+            // Bind invoice details
+            document.querySelector('.invoice-details h2').textContent = invoiceData.documentType || 'FACTURA';
+            document.getElementById('invoice-number').textContent = invoiceData.invoiceNumber || '';
+            document.getElementById('issue-date').textContent = formatDate(invoiceData.issueDate);
+            document.getElementById('due-date').textContent = formatDate(invoiceData.dueDate);
+
+            // Bind client info
+            document.querySelector('.client-info strong').textContent = invoiceData.clientName || '';
+            document.getElementById('client-nuit').textContent = invoiceData.clientTaxId || '';
+            document.getElementById('client-address').textContent = invoiceData.clientAddress || '';
+
+            // Generate items table
+            const itemsBody = document.querySelector('.invoice-items tbody');
+            itemsBody.innerHTML = invoiceData.items.map((item, index) => `
+                <tr>
+                    <td>${item.code || ''}</td>
+                    <td>${item.description || ''}</td>
+                    <td>${item.quantity || 0}</td>
+                    <td>${item.unit || 'UN'}</td>
+                    <td>${formatCurrency(item.unitPrice)}</td>
+                    <td>${formatCurrency(item.vat)}</td>
+                    <td>${formatCurrency(item.total)}</td>
+                </tr>
+            `).join('');
+
+            // Update totals
+            document.getElementById('subtotal').textContent = formatCurrency(invoiceData.subtotal);
+            document.getElementById('total-vat').textContent = formatCurrency(invoiceData.vatAmount);
+            document.getElementById('total').textContent = formatCurrency(invoiceData.total);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            return new Date(dateString).toLocaleDateString('pt-MZ');
+        }
+
+        function formatCurrency(amount) {
+            if (typeof amount !== 'number') amount = parseFloat(amount) || 0;
+            return amount.toLocaleString('pt-MZ', {
+                style: 'currency',
+                currency: 'MZN'
+            });
+        }
+
+        // Export to PDF functionality
+        async function exportToPDF() {
+            const element = document.getElementById('invoicePDF');
+            const options = {
+                margin: 10,
+                filename: `invoice-${invoiceData.invoiceNumber}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            try {
+                await html2pdf().set(options).from(element).save();
+                return true;
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                return false;
+            }
+        }
+
+        // Initialize the template
+        document.addEventListener('DOMContentLoaded', () => {
+            bindInvoiceData();
+
+            // Handle print/export buttons if they exist
+            const printBtn = document.getElementById('printButton');
+            if (printBtn) {
+                printBtn.addEventListener('click', () => window.print());
+            }
+
+            const exportBtn = document.getElementById('exportPDFButton');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportToPDF);
+            }
+
+            // Handle messages from parent window
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'exportPDF') {
+                    exportToPDF();
+                } else if (event.data.type === 'printInvoice') {
+                    window.print();
+                } else if (event.data.type === 'updateData') {
+                    invoiceData = event.data.invoiceData;
+                    bindInvoiceData();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
